@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import MenuTitleComponent from "../components/MenuTitleComponent";
@@ -6,6 +6,7 @@ import axios from "axios";
 
 export default function SignupPage(){
     const navigate = useNavigate()
+    const [buttonDisabled, setButtonDisabled]=useState(false)
     const email = useRef()
     const password = useRef()
     const username = useRef()
@@ -29,11 +30,12 @@ export default function SignupPage(){
     function requestSignup(){
         const url = `${process.env.REACT_APP_URL_API}/signup`
         axios.post(url, form)
-            .then((res)=>{
+            .then(()=>{
                 navigate("/login")
             })
             .catch((err)=>{
                 console.log(err)
+                setButtonDisabled(false)
                 if(err.response.status===409){
                     alert("Esse e-mail já está sendo usado!")
                 }
@@ -45,6 +47,7 @@ export default function SignupPage(){
 
         if(getInputValues()){
 
+            setButtonDisabled(true)
             requestSignup()
         }
     }
@@ -57,7 +60,7 @@ export default function SignupPage(){
                 <input placeholder="password" type="password" required ref={password} />
                 <input placeholder="username" type="text" required ref={username} />
                 <input placeholder="picture url" type="url" required ref={imageUrl} />
-                <button type="submit">Sign Up</button>
+                <button type="submit" disabled={buttonDisabled}>Sign Up</button>
 
                 <Link to="/login">Switch back to log in</Link>
             </form>

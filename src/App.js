@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import styled from "styled-components"
 import UserContext from "./contexts/UserContext"
+import SignupPage from "./pages/SignupPage"
 
 export default function App() {
   return (
@@ -8,7 +9,7 @@ export default function App() {
       <BrowserRouter>
         <UserContext.Provider value={{}}>
           <Routes>
-            <Route path="/" element={{/* <namePage /> */}} />
+            <Route path="/" element={<SignupPage />} />
           </Routes>
         </UserContext.Provider>
       </BrowserRouter>
@@ -17,5 +18,5 @@ export default function App() {
 }
 
 const PagesContainer = styled.main`
-  padding: 25px;
+    box-sizing: border-box;
 `

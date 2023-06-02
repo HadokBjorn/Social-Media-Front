@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import styled from "styled-components"
 import UserContext from "./contexts/UserContext"
 import SignupPage from "./pages/SignupPage"
+import LoginPage from "./pages/LoginPage"
 
 export default function App() {
   return (
@@ -9,7 +10,8 @@ export default function App() {
       <BrowserRouter>
         <UserContext.Provider value={{}}>
           <Routes>
-            <Route path="/" element={<SignupPage />} />
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/sign-up" element={<SignupPage />} />
           </Routes>
         </UserContext.Provider>
       </BrowserRouter>

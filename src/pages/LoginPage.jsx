@@ -4,22 +4,19 @@ import { Link, useNavigate } from "react-router-dom";
 import MenuTitleComponent from "../components/MenuTitleComponent";
 import axios from "axios";
 
-export default function SignupPage(){
+export default function LoginPage(){
     const navigate = useNavigate()
     const [buttonDisabled, setButtonDisabled]=useState(false)
     const email = useRef()
     const password = useRef()
-    const username = useRef()
-    const imageUrl = useRef()
+    
 
-    const form = {email: "", password:"", username: "", image:"" }
+    const form = {email: "", password:""}
 
     function getInputValues(){
         form.email = email.current.value;
         form.password = password.current.value;
-        form.username = username.current.value;
-        form.image = imageUrl.current.value;
-        if (form.email==="" || form.password==="" || form.username==="" || form.image==="" ){
+        if (form.email==="" || form.password==="" ){
             alert("Todos os campos devem ser preenchidos!")
             return false;
         }else{
@@ -27,17 +24,18 @@ export default function SignupPage(){
         }   
     }
 
-    function requestSignup(){
-        const url = `${process.env.REACT_APP_URL_API}/signup`
+    function requestLogin(){
+        const url = `${process.env.REACT_APP_URL_API}/login`
         axios.post(url, form)
-            .then(()=>{
-                navigate("/")
+            .then((res)=>{
+                localStorage.setItem("token", res.data.token)
+                navigate("/timeline")
             })
             .catch((err)=>{
                 console.log(err)
                 setButtonDisabled(false)
-                if(err.response.status===409){
-                    alert("Esse e-mail já está sendo usado!")
+                if(err.response.status===401){
+                    alert("Senha ou e-mail incorreto!")
                 }
             })
     }
@@ -48,7 +46,7 @@ export default function SignupPage(){
         if(getInputValues()){
 
             setButtonDisabled(true)
-            requestSignup()
+            requestLogin()
         }
     }
     
@@ -58,11 +56,10 @@ export default function SignupPage(){
             <form onSubmit={register}>
                 <input placeholder="e-mail" type="email" required ref={email} />
                 <input placeholder="password" type="password" required ref={password} />
-                <input placeholder="username" type="text" required ref={username} />
-                <input placeholder="picture url" type="url" required ref={imageUrl} />
+                
                 <button type="submit" disabled={buttonDisabled}>Sign Up</button>
 
-                <Link to="/">Switch back to log in</Link>
+                <Link to="/sign-up">First time? Create an account!</Link>
             </form>
         </PageContainer>
     )

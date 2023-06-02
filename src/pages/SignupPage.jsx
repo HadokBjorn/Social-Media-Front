@@ -1,26 +1,62 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MenuTitleComponent from "../components/MenuTitleComponent";
+import axios from "axios";
 
 export default function SignupPage(){
+    const navigate = useNavigate()
     const email = useRef()
     const password = useRef()
     const username = useRef()
-    const url = useRef()
+    const imageUrl = useRef()
+
+    const form = {email: "", password:"", username: "", image:"" }
+
+    function getInputValues(){
+        form.email = email.current.value;
+        form.password = password.current.value;
+        form.username = username.current.value;
+        form.image = imageUrl.current.value;
+        if (form.email==="" || form.password==="" || form.username==="" || form.image==="" ){
+            alert("Todos os campos devem ser preenchidos!")
+            return false;
+        }else{
+            return true
+        }   
+    }
+
+    function requestSignup(){
+        const url = `${process.env.REACT_APP_URL_API}/signup`
+        axios.post(url, form)
+            .then((res)=>{
+                navigate("/login")
+            })
+            .catch((err)=>{
+                console.log(err)
+                if(err.response.status===409){
+                    alert("Esse e-mail já está sendo usado!")
+                }
+            })
+    }
 
     function register(e){
         e.preventDefault()
+
+        if(getInputValues()){
+
+            requestSignup()
+        }
     }
     
     return(
         <PageContainer>
             <MenuTitleComponent/>
             <form onSubmit={register}>
-                <input placeholder="e-mail" type="email" ref={email} />
-                <input placeholder="password" type="password" ref={password} />
-                <input placeholder="username" type="text" ref={username} />
-                <input placeholder="picture url" type="url" ref={url} />
+                <input placeholder="e-mail" type="email" required ref={email} />
+                <input placeholder="password" type="password" required ref={password} />
+                <input placeholder="username" type="text" required ref={username} />
+                <input placeholder="picture url" type="url" required ref={imageUrl} />
                 <button type="submit">Sign Up</button>
 
                 <Link to="/login">Switch back to log in</Link>

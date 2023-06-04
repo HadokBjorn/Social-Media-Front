@@ -1,7 +1,8 @@
 import styled from "styled-components"
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import MenuBarComponent from "../components/MenuBarComponent";
 
 export default function TimelinePage() {
 
@@ -27,17 +28,13 @@ export default function TimelinePage() {
 
     return (
         <Screen>
-            <Header>
-                <h1>linkr</h1>
-                <Logout>
-                    <ion-icon name="chevron-down-outline" />
-                    <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" />
-                </Logout>
-            </Header>
+
+            <MenuBarComponent/>
+
             <ContainerTimeline>
                 <h1>Timeline</h1>
                 <WritePost>
-                    <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" />
+                    <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/>
                     <Form>
                         <p>What are you going to share today?</p>
                         <LinkURL
@@ -56,12 +53,12 @@ export default function TimelinePage() {
                     </Form>
                 </WritePost>
                 <Posts>
-                    <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" />
+                    <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/>
                     <PostInfos>
                         <h2>Nome usuário</h2>
-                        <p1>Muito maneiro esse tutorial de Material UI com React, deem uma olhada!</p1>
+                        <p>Muito maneiro esse tutorial de Material UI com React, deem uma olhada!</p>
                         <PostLink>
-                            <img src="img/link.png" />
+                            <img src="img/link.png" alt=""/>
                         </PostLink>
                     </PostInfos>
                 </Posts>
@@ -73,39 +70,7 @@ export default function TimelinePage() {
 const Screen = styled.div`
 background-color: #4D4D4D;
 `
-const Header = styled.div`
-width: 100%;
-height: 72px;
-background: #151515;
-display: flex;
-justify-content: space-between;
-align-items: center;
-position: fixed;
-top: 0;
-h1{
-  font-family: 'Passion One';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 49px;
-  line-height: 54px;
-  letter-spacing: 0.05em;
-  color: #FFFFFF;
-  margin-left: 20px;
-}
-`
-const Logout = styled.div`
-ion-icon{
-    color: white;
-    font-size: 40px;
-    margin-right: 10px;
-}
-img{
-    width: 53px;
-    height: 53px;
-    border-radius: 26.5px;
-    margin-right: 20px;
-}
-`
+
 const ContainerTimeline = styled.div`
 display: flex;
 flex-direction: column;
@@ -226,7 +191,7 @@ h2{
     margin-top: 20px;
     margin-bottom: 7px;
 }
-p1{
+p{
     width: 502px;
     font-family: 'Lato';
     font-style: normal;

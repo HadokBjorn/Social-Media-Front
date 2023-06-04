@@ -1,7 +1,8 @@
 import styled from "styled-components"
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import MenuBarComponent from "../components/MenuBarComponent";
 
 export default function TimelinePage() {
 
@@ -27,7 +28,9 @@ export default function TimelinePage() {
 
     return (
         <Screen>
-            
+
+            <MenuBarComponent/>
+
             <ContainerTimeline>
                 <h1>Timeline</h1>
                 <WritePost>
@@ -67,8 +70,6 @@ export default function TimelinePage() {
 const Screen = styled.div`
 background-color: #4D4D4D;
 `
-
-
 const ContainerTimeline = styled.div`
 display: flex;
 flex-direction: column;
@@ -189,7 +190,7 @@ h2{
     margin-top: 20px;
     margin-bottom: 7px;
 }
-p1{
+p{
     width: 502px;
     font-family: 'Lato';
     font-style: normal;

@@ -20,17 +20,7 @@ export default function UserPage() {
     const navigate = useNavigate()
 
 
-    function publish(e) {
-        e.preventDefault()
-        const URL = ""
-        console.log(form)
-        axios.post(URL, form)
-            .then(res => {
-                navigate("/timeline")
-            })
-            .catch(err => alert(err.response.data.message)
-            )
-    }
+    let user= posts.pop()
 
     return (
         <Screen>
@@ -42,31 +32,12 @@ export default function UserPage() {
                 </Logout>
             </Header>
             <ContainerTimeline>
-                <h1>Timeline</h1>
-                <WritePost>
-                    <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" />
-                    <Form>
-                        <p>What are you going to share today?</p>
-                        <LinkURL
-                            name="link"
-                            value={form.link}
-                            onChange={handleForm}
-                            type="text"
-                            placeholder="http://..." />
-                        <Tittle
-                            name="description"
-                            value={form.description}
-                            onChange={handleForm}
-                            type="text"
-                            placeholder="Awesome article about #javascript" />
-                        <button onClick={publish}> Publish </button>
-                    </Form>
-                </WritePost>
+                <h1>{user?.username}'s posts</h1>
                 <Posts>
                     {posts?.map((i) => <div><img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" />
                     <PostInfos>
-                        <h2>Nome usuário</h2>
-                        <p1>Muito maneiro esse tutorial de Material UI com React, deem uma olhada!</p1>
+                        <h2>{user?.username}</h2>
+                        <p1>{i.description}</p1>
                         <PostLink>
                             <img src="img/link.png" />
                         </PostLink>

@@ -4,6 +4,7 @@ import UserContext from "./contexts/UserContext"
 import SignupPage from "./pages/SignupPage"
 import LoginPage from "./pages/LoginPage"
 import TimelinePage from "./pages/TimelinePage.js"
+import UserPage from "./pages/UserPage"
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
             <Route path="/" element={<LoginPage />} />
             <Route path="/sign-up" element={<SignupPage />} />
             <Route path="/timeline" element={ <TimelinePage /> } />
+            <Route path="/user/:id" element={<UserPage/>}/>
           </Routes>
         </UserContext.Provider>
       </BrowserRouter>

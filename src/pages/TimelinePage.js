@@ -3,10 +3,18 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import MenuBarComponent from "../components/MenuBarComponent";
+import {FiTrash} from "react-icons/fi"
+import {TiPencil} from "react-icons/ti"
 
 export default function TimelinePage() {
 
     const [form, SetForm] = useState({ link: "", description: "" })
+    const [inputValue, setInputValue] = useState("Muito maneiro esse tutorial de Material UI com React, deem uma olhada!");
+    const [editPost, setEditPost]=useState(false)
+    const [disabledInput, setDisabledInput] = useState(false)
+    const token = localStorage.getItem("token");
+
+  
     const navigate = useNavigate()
 
     function handleForm(e) {
@@ -25,6 +33,50 @@ export default function TimelinePage() {
             .catch(err => alert(err.response.data.message)
             )
     }
+
+    function handleKeyPress(e){
+        if (e.key === 'Escape') {
+          setEditPost(false)
+        }
+    };
+
+
+    function escapeInputEditPost(){
+      
+          document.addEventListener('keydown', handleKeyPress);
+      
+          return () => {
+            document.removeEventListener('keydown', handleKeyPress);
+          };
+
+    }
+
+    function updatePost(postId){
+        setDisabledInput(true)
+
+        const url = `${process.env.REACT_APP_URL_API}/posts/${postId}`
+        const config = {headers: {Authorization: `Bearer ${token}`}}
+        const body = {description: inputValue}
+        axios.put(url,body, config)
+            .then(()=>{
+                setEditPost(false)
+            })
+            .catch((err)=>{
+                console.log(err)
+                alert("Não foi possivel salvar as alterações realizadas")
+                setDisabledInput(false)
+            })
+    }
+
+    function handleKeyDown (e,id) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          updatePost(id)
+        }
+      };
+
+    
+        
 
     return (
         <Screen>
@@ -55,8 +107,30 @@ export default function TimelinePage() {
                 <Posts>
                     <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/>
                     <PostInfos>
-                        <h2>Nome usuário</h2>
-                        <p>Muito maneiro esse tutorial de Material UI com React, deem uma olhada!</p>
+                        <NamePostContainer>
+                            <h2>Nome usuário</h2>
+                            <TiPencil onClick={()=>{
+                                editPost?setEditPost(false):setEditPost(true);
+                                escapeInputEditPost();
+                                }}
+                                size={23} 
+                                color="#FFF"
+                            />
+                            <FiTrash size={23} color="#FFF"/>
+                        </NamePostContainer>
+                        {
+                            editPost?
+                                <InputEdition
+                                    type="text"
+                                    value={inputValue}
+                                    onChange={(e)=>setInputValue(e.target.value)}
+                                    disabled={disabledInput}
+                                    onKeyDown={handleKeyDown}
+                                    autoFocus
+                                />                            
+                            :
+                            <p>Muito maneiro esse tutorial de Material UI com React, deem uma olhada!</p>
+                        }
                         <PostLink>
                             <img src="img/link.png" alt=""/>
                         </PostLink>
@@ -187,8 +261,7 @@ h2{
     font-size: 19px;
     line-height: 23px;
     color: #FFFFFF;
-    margin-top: 20px;
-    margin-bottom: 7px;
+    
 }
 p{
     width: 502px;
@@ -215,4 +288,31 @@ img{
     margin-left: 349.56px;
     margin-top: 0px;
 }
+`
+const NamePostContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 20px;
+    margin-bottom: 7px;
+`
+const InputEdition = styled.textarea`
+    background: #FFFFFF;
+    border-radius: 7px;
+    width: 100%;
+    height: 44px;
+    padding: 0 9px;
+
+    overflow: hidden;
+    resize: none;
+    border: none;
+    outline: none;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #4C4C4C;
 `

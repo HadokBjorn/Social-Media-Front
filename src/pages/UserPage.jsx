@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
+import MenuBarComponent from "../components/MenuBarComponent";
 
 export default function UserPage() {
 
@@ -24,13 +25,7 @@ export default function UserPage() {
 
     return (
         <Screen>
-            <Header>
-                <h1>linkr</h1>
-                <Logout>
-                    <ion-icon name="chevron-down-outline" />
-                    <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" />
-                </Logout>
-            </Header>
+            <MenuBarComponent/>
             <ContainerTimeline>
                 <h1>{user?.username}'s posts</h1>
                 <Posts>

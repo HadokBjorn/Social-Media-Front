@@ -2,6 +2,7 @@ import styled from "styled-components"
 import {IoIosArrowDown, IoIosArrowUp} from "react-icons/io"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { DebounceInput } from 'react-debounce-input';
 
 export default function MenuBarComponent(){
     const navigate = useNavigate()
@@ -15,6 +16,10 @@ export default function MenuBarComponent(){
     return(
         <Header>
             <h1>linkr</h1>
+            <Search as={DebounceInput}
+             debounceTimeout={300}
+             type="text"
+             placeholder={viewWindow <= 768 ? 'Search for people and friends' : 'Search for people'}/>
             <Logout>
                 <IconContainer>
 
@@ -130,3 +135,25 @@ const ClickOut = styled.article`
     z-index: 3;
     top: 0;bottom:0;left:0;right:0;
 `
+
+const Search= styled.input`
+  width: 563px;
+  max-width: 563px;
+  height: 45px;
+  border-radius: 8px;
+  border: none;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 23px;
+  font-family: 'Lato';
+  padding-left: 12px;
+  padding-right: 40px;
+  position: relative;
+  z-index: 1;
+  :focus{
+    outline: none;
+  }
+  &::placeholder{
+    color: white;
+  };`;

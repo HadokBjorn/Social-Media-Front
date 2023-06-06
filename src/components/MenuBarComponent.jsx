@@ -39,7 +39,7 @@ export default function MenuBarComponent(){
             <Sear as={DebounceInput}
              debounceTimeout={300}
              type="text"
-             placeholder={viewWindow <= 768 ? 'Search for people and friends' : 'Search for people'}
+             placeholder={'Search for people and friends'}
              value={busca}
              onChange={Search}/>
              {result.length > 0 ? <Container>

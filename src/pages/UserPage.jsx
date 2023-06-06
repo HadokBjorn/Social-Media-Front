@@ -29,12 +29,12 @@ export default function UserPage() {
             <ContainerTimeline>
                 <h1>{user?.username}'s posts</h1>
                 <Posts>
-                    {posts?.map((i) => <div><img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" />
+                    {posts?.map((i) => <div><img src={user?.image} alt="profile"/>
                     <PostInfos>
                         <h2>{user?.username}</h2>
                         <p1>{i.description}</p1>
                         <PostLink>
-                            <img src="img/link.png" />
+                            <img src="img/link.png"  alt="link"/>
                         </PostLink>
                     </PostInfos></div>)}
     

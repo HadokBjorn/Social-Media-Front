@@ -22,6 +22,7 @@ export default function MenuBarComponent(){
         setBusca(event.target.value)
         const url = `${process.env.REACT_APP_URL_API}/search`
         if( busca.length >= 3){
+            console.log(busca)
             axios.post(url, {search: busca})
             .then((res)=>{
                 setResult(res.data)
@@ -40,7 +41,6 @@ export default function MenuBarComponent(){
              debounceTimeout={300}
              type="text"
              placeholder={'Search for people and friends'}
-             value={busca}
              onChange={Search}/>
              {result.length > 0 ? <Container>
                 {result.map((i) => <ResultBox>
@@ -187,7 +187,7 @@ const Sear= styled.input`
     outline: none;
   }
   &::placeholder{
-    color: white;
+    color: black;
   };`;
 
   const Container = styled.div`

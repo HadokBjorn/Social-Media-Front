@@ -3,23 +3,52 @@ import {IoIosArrowDown, IoIosArrowUp} from "react-icons/io"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { DebounceInput } from 'react-debounce-input';
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function MenuBarComponent(){
     const navigate = useNavigate()
     const [openDropdown, setOpenDropdown] = useState(false)
+    const [busca, setBusca]= useState("")
+    const [result, setResult]= useState([])
     
     function logout(){
         localStorage.clear()
         navigate("/")
     }
+
+    function Search(event){
+        setBusca(event.target.value)
+        const url = `${process.env.REACT_APP_URL_API}/search`
+        if( busca.length >= 3){
+            axios.post(url, {search: busca})
+            .then((res)=>{
+                setResult(res.data)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+        }
+    }
     
     return(
         <Header>
             <h1>linkr</h1>
-            <Search as={DebounceInput}
+            <SearchContainer>
+            <Sear as={DebounceInput}
              debounceTimeout={300}
              type="text"
-             placeholder={viewWindow <= 768 ? 'Search for people and friends' : 'Search for people'}/>
+             placeholder={viewWindow <= 768 ? 'Search for people and friends' : 'Search for people'}
+             value={busca}
+             onChange={Search}/>
+             {result.length > 0 ? <Container>
+                {result.map((i) => <ResultBox>
+                    <Link to={`user/${i.id}`}>
+
+                    </Link>
+                </ResultBox> )}
+             </Container> : <div></div>}
+            </SearchContainer>
             <Logout>
                 <IconContainer>
 
@@ -136,8 +165,8 @@ const ClickOut = styled.article`
     top: 0;bottom:0;left:0;right:0;
 `
 
-const Search= styled.input`
-  width: 563px;
+const Sear= styled.input`
+  width: 560px;
   max-width: 563px;
   height: 45px;
   border-radius: 8px;
@@ -157,3 +186,37 @@ const Search= styled.input`
   &::placeholder{
     color: white;
   };`;
+
+  const Container = styled.div`
+  top: 100%;
+  background-color: gray;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  @media (max-width: 768px){
+    width: 100%;
+    margin: 0 auto;
+    margin-top: -6px;
+  }
+`;
+
+const SearchContainer= styled.div `
+display:flex;
+flex-direction:column;`
+
+const ResultBox= styled.div `
+width: 560px;
+display:flex;
+flex-direction:row;
+img{
+    width:30px;
+    height:30px;
+    border-radius:8px;
+    margin-left:5px;
+};
+div{
+  font-weight: 400;
+  font-family: 'Lato';
+  font-size:medium;
+  color: black;
+}`

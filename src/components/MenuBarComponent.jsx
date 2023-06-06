@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import {IoIosArrowDown, IoIosArrowUp} from "react-icons/io"
+import { AiOutlineSearch } from 'react-icons/ai';
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { DebounceInput } from 'react-debounce-input';
@@ -44,10 +45,12 @@ export default function MenuBarComponent(){
              {result.length > 0 ? <Container>
                 {result.map((i) => <ResultBox>
                     <Link to={`user/${i.id}`}>
-
+                        <img src={i.image} alt="profile"/>
+                        <div>{i.username}</div>
                     </Link>
                 </ResultBox> )}
              </Container> : <div></div>}
+             <MagnifyingGlass>{AiOutlineSearch}</MagnifyingGlass>
             </SearchContainer>
             <Logout>
                 <IconContainer>
@@ -219,4 +222,18 @@ div{
   font-family: 'Lato';
   font-size:medium;
   color: black;
+}`;
+
+const MagnifyingGlass= styled.div `
+font-size: 30px;
+top: 8px;
+right: 10px;
+cursor: pointer;
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1;
+@media (max-width: 768px){  
+top: 15px;
+right: 10px;
 }`

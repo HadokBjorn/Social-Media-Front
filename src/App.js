@@ -3,7 +3,7 @@ import styled from "styled-components"
 import UserContext from "./contexts/UserContext"
 import SignupPage from "./pages/SignupPage"
 import LoginPage from "./pages/LoginPage"
-import TimelinePage from "./pages/TimelinePage"
+import TimelinePage from "./pages/TimelinePage.js"
 import UserPage from "./pages/UserPage"
 
 export default function App() {

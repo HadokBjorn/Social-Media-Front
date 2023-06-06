@@ -25,7 +25,7 @@ export default function LoginPage(){
     }
 
     function requestLogin(){
-        const url = `${process.env.REACT_APP_URL_API}/login`
+        const url = `${process.env.REACT_APP_API_URL}/login`
         axios.post(url, form)
             .then((res)=>{
                 localStorage.setItem("token", res.data.token)

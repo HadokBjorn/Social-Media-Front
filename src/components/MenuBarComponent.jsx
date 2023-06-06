@@ -20,7 +20,7 @@ export default function MenuBarComponent(){
 
     function Search(event){
         setBusca(event.target.value)
-        const url = `${process.env.REACT_APP_URL_API}/search`
+        const url = `${process.env.REACT_APP_API_URL}/search`
         if( busca.length >= 3){
             console.log(busca)
             axios.post(url, {search: busca})

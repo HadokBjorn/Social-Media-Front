@@ -10,7 +10,7 @@ export default function UserPage() {
     const [posts, setPosts]= useState([])
 
     useEffect(() => {
-        const url = `${process.env.REACT_APP_URL_API}/user/:id`
+        const url = `${process.env.REACT_APP_API_URL}/user/:id`
         axios
           .get(url)
           .then((res) => setPosts(res.data))
@@ -47,39 +47,7 @@ export default function UserPage() {
 const Screen = styled.div`
 background-color: #4D4D4D;
 `
-const Header = styled.div`
-width: 100%;
-height: 72px;
-background: #151515;
-display: flex;
-justify-content: space-between;
-align-items: center;
-position: fixed;
-top: 0;
-h1{
-  font-family: 'Passion One';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 49px;
-  line-height: 54px;
-  letter-spacing: 0.05em;
-  color: #FFFFFF;
-  margin-left: 20px;
-}
-`
-const Logout = styled.div`
-ion-icon{
-    color: white;
-    font-size: 40px;
-    margin-right: 10px;
-}
-img{
-    width: 53px;
-    height: 53px;
-    border-radius: 26.5px;
-    margin-right: 20px;
-}
-`
+
 const ContainerTimeline = styled.div`
 display: flex;
 flex-direction: column;

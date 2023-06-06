@@ -54,7 +54,7 @@ export default function TimelinePage() {
     function updatePost(postId){
         setDisabledInput(true)
 
-        const url = `${process.env.REACT_APP_URL_API}/posts/${postId}`
+        const url = `${process.env.REACT_APP_API_URL}/posts/${postId}`
         const config = {headers: {Authorization: `Bearer ${token}`}}
         const body = {description: inputValue}
         axios.put(url,body, config)

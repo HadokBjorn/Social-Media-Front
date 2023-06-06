@@ -28,7 +28,7 @@ export default function SignupPage(){
     }
 
     function requestSignup(){
-        const url = `${process.env.REACT_APP_URL_API}/signup`
+        const url = `${process.env.REACT_APP_API_URL}/signup`
         axios.post(url, form)
             .then(()=>{
                 navigate("/")

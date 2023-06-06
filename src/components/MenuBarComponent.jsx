@@ -1,20 +1,57 @@
 import styled from "styled-components"
 import {IoIosArrowDown, IoIosArrowUp} from "react-icons/io"
+import { AiOutlineSearch } from 'react-icons/ai';
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { DebounceInput } from 'react-debounce-input';
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function MenuBarComponent(){
     const navigate = useNavigate()
     const [openDropdown, setOpenDropdown] = useState(false)
+    const [busca, setBusca]= useState("")
+    const [result, setResult]= useState([])
     
     function logout(){
         localStorage.clear()
         navigate("/")
     }
+
+    function Search(event){
+        setBusca(event.target.value)
+        const url = `${process.env.REACT_APP_URL_API}/search`
+        if( busca.length >= 3){
+            console.log(busca)
+            axios.post(url, {search: busca})
+            .then((res)=>{
+                setResult(res.data)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+        }
+    }
     
     return(
         <Header>
             <h1>linkr</h1>
+            <SearchContainer>
+            <Sear as={DebounceInput}
+             debounceTimeout={300}
+             type="text"
+             placeholder={'Search for people and friends'}
+             onChange={Search}/>
+             {result.length > 0 ? <Container>
+                {result.map((i) => <ResultBox>
+                    <Link to={`user/${i.id}`}>
+                        <img src={i.image} alt="profile"/>
+                        <div>{i.username}</div>
+                    </Link>
+                </ResultBox> )}
+             </Container> : <div></div>}
+             <MagnifyingGlass>{AiOutlineSearch}</MagnifyingGlass>
+            </SearchContainer>
             <Logout>
                 <IconContainer>
 
@@ -130,3 +167,73 @@ const ClickOut = styled.article`
     z-index: 3;
     top: 0;bottom:0;left:0;right:0;
 `
+
+const Sear= styled.input`
+  width: 560px;
+  max-width: 563px;
+  height: 45px;
+  border-radius: 8px;
+  border: none;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 23px;
+  font-family: 'Lato';
+  padding-left: 12px;
+  padding-right: 40px;
+  position: relative;
+  z-index: 1;
+  :focus{
+    outline: none;
+  }
+  &::placeholder{
+    color: black;
+  };`;
+
+  const Container = styled.div`
+  top: 100%;
+  background-color: gray;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  @media (max-width: 768px){
+    width: 100%;
+    margin: 0 auto;
+    margin-top: -6px;
+  }
+`;
+
+const SearchContainer= styled.div `
+display:flex;
+flex-direction:column;`
+
+const ResultBox= styled.div `
+width: 560px;
+display:flex;
+flex-direction:row;
+img{
+    width:30px;
+    height:30px;
+    border-radius:8px;
+    margin-left:5px;
+};
+div{
+  font-weight: 400;
+  font-family: 'Lato';
+  font-size:medium;
+  color: black;
+}`;
+
+const MagnifyingGlass= styled.div `
+font-size: 30px;
+top: 8px;
+right: 10px;
+cursor: pointer;
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1;
+@media (max-width: 768px){  
+top: 15px;
+right: 10px;
+}`

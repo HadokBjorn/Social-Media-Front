@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuBarComponent from "../components/MenuBarComponent";
 import {FiTrash} from "react-icons/fi"
 import {TiPencil} from "react-icons/ti"
@@ -13,6 +13,18 @@ export default function TimelinePage() {
     const [editPost, setEditPost]=useState(false)
     const [disabledInput, setDisabledInput] = useState(false)
     const token = localStorage.getItem("token");
+
+    useEffect(()=>{
+        const url = `${process.env.REACT_APP_API_URL}/timeline`
+        const config = {headers: {Authorization: `Bearer ${token}`}}
+        axios.get(url,config)
+            .then((res)=>{
+                console.log(res.data)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+    },[])
 
   
     const navigate = useNavigate()

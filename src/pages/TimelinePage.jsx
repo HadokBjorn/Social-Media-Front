@@ -5,6 +5,7 @@ import MenuBarComponent from "../components/MenuBarComponent";
 import {FiTrash} from "react-icons/fi"
 import {TiPencil} from "react-icons/ti"
 import ModalComponent from "../components/ModalComponent";
+import { Link } from "react-router-dom";
 
 export default function TimelinePage() {
 
@@ -126,7 +127,7 @@ export default function TimelinePage() {
                     posts?
                     posts.map((post)=>(
                         <Posts key={post.id}>
-                            <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/>
+                            <Link to={`user/${post.user_id}`}><img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/></Link>
                             <PostInfos>
 
                                 {

@@ -24,13 +24,22 @@ export default function UserPage() {
 
     let user= posts.pop()
 
+    function Follow(){
+        if (followed){
+            setFollowed(false)
+        }
+        else{
+            setFollowed(true) 
+        }
+    }
+
     return (
         <Screen>
             <MenuBarComponent/>
             <ContainerTimeline>
                 <HeaderTimeline>
                      <h1>{user?.username}'s posts</h1>
-                     <FollowButton>{!followed ? "Follow"  : "Unfollow"}</FollowButton>
+                     <FollowButton follow={followed} onClick={Follow}>{!followed ? "Follow"  : "Unfollow"}</FollowButton>
                 </HeaderTimeline>
                 <Posts>
                     {posts?.map((i) => <div><img src={user?.image} alt="profile"/>
@@ -67,6 +76,7 @@ h1{
     color: #FFFFFF;
     margin-top: 50px;
     margin-bottom: 30px;
+    margin-left:200px;
 }
 `
 
@@ -134,7 +144,16 @@ display:flex;
 flex-direction:row;`;
 
 const FollowButton= styled.button `
-color:white;
-background-color:blue;
-width:200px;
-height:100px;`;
+width: 112px;
+    height: 31px;
+    background: ${(props) => props.follow ? `white` : `#1877F2`};
+    border-radius: 5px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    color: ${(props) => props.follow ? `#1877F2` : `white`};;
+    border: none;
+    margin-top:77px;
+    margin-left:100px;`;

@@ -127,13 +127,13 @@ export default function TimelinePage() {
                     posts?
                     posts.map((post)=>(
                         <Posts key={post.id}>
-                            <Link to={`user/${post.user_id}`}><img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/></Link>
+                            <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/>
                             <PostInfos>
 
                                 {
                                     user.id === post.user_id?
                                     <NamePostContainer>
-                                        <h2>Nome usuário</h2>
+                                        <Link to={`user/${post.user_id}`}><h2>Nome usuário</h2></Link>
                                         <TiPencil onClick={()=>{
                                             editPost.isActive?
                                             setEditPost({isActive:false, id: post.id}):

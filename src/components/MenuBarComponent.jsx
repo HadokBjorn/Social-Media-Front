@@ -48,8 +48,8 @@ export default function MenuBarComponent({image}){
                             {
                                 result.map((i) => (
                                 <ResultBox>
+                                    <div> <img src={i.image} alt="profile"/></div>
                                     <Link to={`user/${i.id}`}>
-                                        <img src={i.image} alt="profile"/>
                                         <div>{i.username}</div>
                                     </Link>
                                 </ResultBox>) 
@@ -179,6 +179,7 @@ const ClickOut = styled.article`
 
 const Sear= styled.input`
   width: 560px;
+  margin-top:12px;
   max-width: 563px;
   height: 45px;
   border-radius: 8px;
@@ -190,7 +191,6 @@ const Sear= styled.input`
   font-family: 'Lato';
   padding-left: 12px;
   padding-right: 40px;
-  position: relative;
   z-index: 1;
   :focus{
     outline: none;
@@ -200,8 +200,9 @@ const Sear= styled.input`
   };`;
 
   const Container = styled.div`
-  top: 100%;
+  width:560px;
   background-color: gray;
+  margin-top:5px;
   border-radius: 0 0 8px 8px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   padding: 8px;
@@ -214,7 +215,8 @@ const Sear= styled.input`
 
 const SearchContainer= styled.div `
 display:flex;
-flex-direction:column;`
+flex-direction:column;
+height:100%;`
 
 const ResultBox= styled.div `
 width: 560px;
@@ -231,6 +233,7 @@ div{
   font-family: 'Lato';
   font-size:medium;
   color: black;
+  margin-left:3px;
 }`;
 
 const MagnifyingGlass= styled.div `

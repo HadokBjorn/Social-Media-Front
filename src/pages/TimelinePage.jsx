@@ -12,6 +12,7 @@ export default function TimelinePage() {
     const [inputValue, setInputValue] = useState("Muito maneiro esse tutorial de Material UI com React, deem uma olhada!");
     const [editPost, setEditPost]=useState({isActive:false, id:0})
     const [disabledInput, setDisabledInput] = useState(false)
+    const [deletePost, setDeletePost] = useState(false)
     const [posts, setPosts] = useState(null)
     const user = JSON.parse(localStorage.getItem("user"))
 
@@ -26,7 +27,7 @@ export default function TimelinePage() {
             .catch((err)=>{
                 console.log(err)
             })
-    },[user.token])
+    },[user.token, deletePost])
 
   
 
@@ -97,9 +98,6 @@ export default function TimelinePage() {
         <Screen>
 
             <MenuBarComponent image={user.image}/>
-
-            <ModalComponent/>
-
             <ContainerTimeline>
                 <h1>Timeline</h1>
                 <WritePost>
@@ -145,7 +143,14 @@ export default function TimelinePage() {
                                             size={23} 
                                             color="#FFF"
                                         />
-                                        <FiTrash size={23} color="#FFF"/>
+                                        <FiTrash 
+                                        size={23} 
+                                        color="#FFF"
+                                        onClick={()=>setDeletePost(true)}
+                                        />
+
+                                        { deletePost ? <ModalComponent token={user.token} postId={post.id} setDeletePost={setDeletePost}/> : "" }
+
                                     </NamePostContainer>
                                     :
                                     <NamePostContainer>

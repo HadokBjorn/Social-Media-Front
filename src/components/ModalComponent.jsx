@@ -1,12 +1,28 @@
+import axios from "axios";
 import styled from "styled-components";
-export default function ModalComponent(){
+export default function ModalComponent({postId, setDeletePost, token}){
+    function deletePost(e){
+        e.preventDefault()
+        const url = `${process.env.REACT_APP_API_URL}/posts/${postId}`
+        const config = {headers: {Authorization: `Bearer ${token}`}}
+        axios.delete(url, config)
+            .then(()=>{
+                setDeletePost(false)
+            })
+            .catch((err)=>{
+                console.log(err)
+                setDeletePost(false)
+                alert("Houve um erro ao tentar deletar seu post, tente novamente")
+            })
+    }
+
     return(
         <ModalContainer>
-            <Modal>
+            <Modal onSubmit={deletePost}>
                 <h2>Are you sure you want to delete this post?</h2>
                 <ButtonContainer>
-                    <button className="cancel">No, go back</button>
-                    <button className="delete">Yes, delete it</button>
+                    <button onClick={()=>setDeletePost(false)} className="cancel">No, go back</button>
+                    <button type="submit" className="delete">Yes, delete it</button>
                 </ButtonContainer>
             </Modal>
 

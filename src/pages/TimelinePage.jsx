@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import MenuBarComponent from "../components/MenuBarComponent";
 import {FiTrash} from "react-icons/fi"
 import {TiPencil} from "react-icons/ti"
+import ModalComponent from "../components/ModalComponent";
 
 export default function TimelinePage() {
 
@@ -96,6 +97,8 @@ export default function TimelinePage() {
         <Screen>
 
             <MenuBarComponent image={user.image}/>
+
+            <ModalComponent/>
 
             <ContainerTimeline>
                 <h1>Timeline</h1>

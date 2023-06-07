@@ -155,7 +155,7 @@ export default function TimelinePage() {
                                     </NamePostContainer>
                                     :
                                     <NamePostContainer>
-                                        <h2>Nome usuário</h2>
+                                        <Link to={`user/${post.user_id}`}><h2>Nome usuário</h2></Link>
                                     </NamePostContainer>
                                 }
 

@@ -7,7 +7,7 @@ import { DebounceInput } from 'react-debounce-input';
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function MenuBarComponent(){
+export default function MenuBarComponent({image}){
     const navigate = useNavigate()
     const [openDropdown, setOpenDropdown] = useState(false)
     const [busca, setBusca]= useState("")
@@ -75,7 +75,7 @@ export default function MenuBarComponent(){
                 </IconContainer>
 
                 <img 
-                src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" 
+                src={image} 
                 alt="imagem do usuário"
                 />
                 

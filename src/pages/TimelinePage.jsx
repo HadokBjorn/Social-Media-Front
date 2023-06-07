@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import MenuBarComponent from "../components/MenuBarComponent";
@@ -12,7 +11,8 @@ export default function TimelinePage() {
     const [inputValue, setInputValue] = useState("Muito maneiro esse tutorial de Material UI com React, deem uma olhada!");
     const [editPost, setEditPost]=useState(false)
     const [disabledInput, setDisabledInput] = useState(false)
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token")
+    const image = localStorage.getItem("image")
 
     useEffect(()=>{
         const url = `${process.env.REACT_APP_API_URL}/timeline`
@@ -24,10 +24,9 @@ export default function TimelinePage() {
             .catch((err)=>{
                 console.log(err)
             })
-    },[])
+    },[token])
 
   
-    const navigate = useNavigate()
 
     function handleForm(e) {
         const { name, value } = e.target
@@ -36,11 +35,13 @@ export default function TimelinePage() {
 
     function publish(e) {
         e.preventDefault()
-        const URL = ""
+        const URL = `${process.env.REACT_APP_API_URL}/timeline`
+        const config = {headers: {Authorization: `Bearer ${token}`}}
         console.log(form)
-        axios.post(URL, form)
+        axios.post(URL, form, config)
             .then(res => {
-                navigate("/timeline")
+                console.log(res)
+                SetForm({ link: "", description: "" })
             })
             .catch(err => alert(err.response.data.message)
             )
@@ -93,27 +94,30 @@ export default function TimelinePage() {
     return (
         <Screen>
 
-            <MenuBarComponent/>
+            <MenuBarComponent image={image}/>
 
             <ContainerTimeline>
                 <h1>Timeline</h1>
                 <WritePost>
                     <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/>
-                    <Form>
+                    <Form onSubmit={publish}>
                         <p>What are you going to share today?</p>
                         <LinkURL
                             name="link"
                             value={form.link}
                             onChange={handleForm}
-                            type="text"
-                            placeholder="http://..." />
+                            type="url"
+                            required
+                            placeholder="http://..."
+                        />
                         <Tittle
                             name="description"
                             value={form.description}
                             onChange={handleForm}
                             type="text"
-                            placeholder="Awesome article about #javascript" />
-                        <button onClick={publish}> Publish </button>
+                            placeholder="Awesome article about #javascript"
+                        />
+                        <button type="submit"> Publish </button>
                     </Form>
                 </WritePost>
                 <Posts>
@@ -201,7 +205,7 @@ const LinkURL = styled.input`
     font-weight: 300;
     font-size: 15px;
     line-height: 18px;
-    color: #949494;
+    color: #111;
 `
 const Tittle = styled.input`
 width: 502px;
@@ -214,9 +218,9 @@ font-style: normal;
 font-weight: 300;
 font-size: 15px;
 line-height: 18px;
-color: #949494;
+color: #111;
 `
-const Form = styled.div`
+const Form = styled.form`
 display: flex;
 flex-direction: column;
 width: 502px;

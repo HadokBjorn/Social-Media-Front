@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -9,13 +9,24 @@ export default function UserPage() {
 
     const [posts, setPosts]= useState([])
     const [followed, setFollowed]= useState(false)
+    const [idfollow, setIdfollow]= useState(0)
+    const logged = JSON.parse(localStorage.getItem("user"))
+    const params= useParams()
 
     useEffect(() => {
-        const url = `${process.env.REACT_APP_API_URL}/user/:id`
+        const url1 = `${process.env.REACT_APP_API_URL}/user/:id`
+        const url2 = `${process.env.REACT_APP_API_URL}/followed`
+        const body={user_id: Number(params), follower_id: logged.id }
         axios
-          .get(url)
+          .get(url1)
           .then((res) => setPosts(res.data))
           .catch((err) => console.log(err.message));
+        
+        let promise= axios.post(url2, body)
+        promise.then((res)=> {if(res.data === true){
+            setFollowed(true)
+        }})
+        promise.catch((err) => console.log(err.message))
 
       }, []);
 
@@ -26,10 +37,19 @@ export default function UserPage() {
 
     function Follow(){
         if (followed){
-            setFollowed(false)
+            const body= {id: idfollow}
+            const url = `${process.env.REACT_APP_API_URL}/unfollow`
+            const promise= axios.post(url, body)
+            promise.then((res)=> setFollowed(false))
+            promise.catch((err)=> console.log(err.message))
         }
         else{
-            setFollowed(true) 
+            const body= {user_id: user.id, follower_id: logged.id}
+            const url = `${process.env.REACT_APP_API_URL}/follow`
+            const promise= axios.post(url, body)
+            promise.then((res)=> {setFollowed(true);
+            setIdfollow(res.data)})
+            promise.catch((err)=> console.log(err.message))
         }
     }
 

@@ -5,8 +5,8 @@ export default function ModalComponent(){
             <Modal>
                 <h2>Are you sure you want to delete this post?</h2>
                 <ButtonContainer>
-                    <button>No, go back</button>
-                    <button>Yes, delete it</button>
+                    <button className="cancel">No, go back</button>
+                    <button className="delete">Yes, delete it</button>
                 </ButtonContainer>
             </Modal>
 
@@ -27,35 +27,52 @@ const ModalContainer = styled.article`
     justify-content: center;
 `
 const Modal = styled.form`
-    width: 50%;
+    width: 60%;
     height: 50%;
     background-color: #333333;
     border-radius: 50px;
     display: flex;
+    gap:40px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 34px;
-    line-height: 41px;
-    text-align: center;
+    h2{
+        width: 80%;
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 34px;
+        line-height: 41px;
+        text-align: center;
 
-    color: #FFFFFF;
+        color: #FFFFFF;
+    }
 `
 const ButtonContainer = styled.div`
     display: flex;
     align-items: center;
-
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 22px;
-    /* identical to box height */
+    gap: 27px;
 
 
-    color: #1877F2;
+    button{
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 22px;
+
+        height: 37px;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .cancel{
+        background-color: #fff;
+        color: #1877F2;
+    }
+    .delete{
+        background-color: #1877F2;
+        color: #fff;
+    }
 `

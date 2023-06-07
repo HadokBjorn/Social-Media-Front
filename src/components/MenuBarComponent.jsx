@@ -12,6 +12,7 @@ export default function MenuBarComponent({image}){
     const [openDropdown, setOpenDropdown] = useState(false)
     const [busca, setBusca]= useState("")
     const [result, setResult]= useState([])
+    const logged = JSON.parse(localStorage.getItem("user"))
     
     function logout(){
         localStorage.clear()
@@ -23,7 +24,7 @@ export default function MenuBarComponent({image}){
         const url = `${process.env.REACT_APP_API_URL}/search`
         if( busca.length >= 3){
             console.log(busca)
-            axios.post(url, {search: busca})
+            axios.post(url, {search: busca, id: logged.id})
             .then((res)=>{
                 setResult(res.data)
             })

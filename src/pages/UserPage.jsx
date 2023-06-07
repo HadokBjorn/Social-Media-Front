@@ -8,6 +8,7 @@ import MenuBarComponent from "../components/MenuBarComponent";
 export default function UserPage() {
 
     const [posts, setPosts]= useState([])
+    const [followed, setFollowed]= useState(false)
 
     useEffect(() => {
         const url = `${process.env.REACT_APP_API_URL}/user/:id`
@@ -27,7 +28,10 @@ export default function UserPage() {
         <Screen>
             <MenuBarComponent/>
             <ContainerTimeline>
-                <h1>{user?.username}'s posts</h1>
+                <HeaderTimeline>
+                     <h1>{user?.username}'s posts</h1>
+                     <FollowButton>{!followed ? "Follow"  : "Unfollow"}</FollowButton>
+                </HeaderTimeline>
                 <Posts>
                     {posts?.map((i) => <div><img src={user?.image} alt="profile"/>
                     <PostInfos>
@@ -65,80 +69,10 @@ h1{
     margin-bottom: 30px;
 }
 `
-const WritePost = styled.div`
-display: flex;
-width: 611px;
-height: 209px;
-background: #FFFFFF;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-border-radius: 16px;
-margin-bottom: 40px;
-img{
-    width: 50px;
-    height: 50px;
-    border-radius: 26.5px;
-    margin-left: 15px;
-    margin-top: 18px;
-}
-`
-const LinkURL = styled.input`
-    width: 503px;
-    height: 30px;
-    background: #EFEFEF;
-    border-radius: 5px;
-    border: none;
-    margin-bottom: 6px;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 300;
-    font-size: 15px;
-    line-height: 18px;
-    color: #949494;
-`
-const Tittle = styled.input`
-width: 502px;
-height: 66px;
-background: #EFEFEF;
-border-radius: 5px;
-border: none;
-font-family: 'Lato';
-font-style: normal;
-font-weight: 300;
-font-size: 15px;
-line-height: 18px;
-color: #949494;
-`
-const Form = styled.div`
-display: flex;
-flex-direction: column;
-width: 502px;
-margin-left: 15px;
-margin-top: 18px;
-p{
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 300;
-    font-size: 20px;
-    line-height: 24px;
-    color: #707070;
-    margin-bottom: 10px;
-}
-button{
-    width: 112px;
-    height: 31px;
-    background: #1877F2;
-    border-radius: 5px;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 17px;
-    color: #FFFFFF;
-    border: none;
-    margin-top: 6px;
-    margin-left: 390px;
-}
-`
+
+
+
+
 const Posts = styled.div`
 width: 611px;
 height: 276px;
@@ -193,4 +127,14 @@ img{
     margin-left: 349.56px;
     margin-top: 0px;
 }
-`
+`;
+
+const HeaderTimeline= styled.div `
+display:flex;
+flex-direction:row;`;
+
+const FollowButton= styled.button `
+color:white;
+background-color:blue;
+width:200px;
+height:100px;`;

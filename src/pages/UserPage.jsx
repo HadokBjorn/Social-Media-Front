@@ -10,6 +10,7 @@ export default function UserPage() {
     const [posts, setPosts]= useState([])
     const [followed, setFollowed]= useState(false)
     const [idfollow, setIdfollow]= useState(0)
+    const [disabled, setDisabled]= useState(false)
     const logged = JSON.parse(localStorage.getItem("user"))
     const params= useParams()
 
@@ -38,19 +39,23 @@ export default function UserPage() {
 
     function Follow(){
         if (followed){
+            setDisabled(true)
             const body= {id: idfollow}
             const url = `${process.env.REACT_APP_API_URL}/unfollow`
             const promise= axios.post(url, body)
-            promise.then((res)=> setFollowed(false))
-            promise.catch((err)=> console.log(err.message))
+            promise.then((res)=> {setFollowed(false);
+            setDisabled(false)})
+            promise.catch((err)=> alert("A operação não pode ser realizada, tente novamente!"))
         }
         else{
+            setDisabled(true)
             const body= {user_id: Number(params.id), follower_id: logged.id}
             const url = `${process.env.REACT_APP_API_URL}/follow`
             const promise= axios.post(url, body)
             promise.then((res)=> {setFollowed(true);
-            setIdfollow(res.data)})
-            promise.catch((err)=> console.log(err.message))
+            setIdfollow(res.data);
+            setDisabled(false)})
+            promise.catch((err)=> alert("A operação não pode ser realizada, tente novamente!"))
         }
     }
 
@@ -60,7 +65,7 @@ export default function UserPage() {
             <ContainerTimeline>
                 <HeaderTimeline>
                      <h1>{user?.username}'s posts</h1>
-                     <FollowButton follow={followed} onClick={Follow}>{!followed ? "Follow"  : "Unfollow"}</FollowButton>
+                     <FollowButton disabled={disabled} follow={followed} onClick={Follow}>{!followed ? "Follow"  : "Unfollow"}</FollowButton>
                 </HeaderTimeline>
                 <Posts>
                     {posts?.map((i) => <div><img src={user?.image} alt="profile"/>

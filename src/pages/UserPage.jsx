@@ -14,6 +14,7 @@ export default function UserPage() {
     const params= useParams()
 
     useEffect(() => {
+        console.log(params)
         const url1 = `${process.env.REACT_APP_API_URL}/user/:id`
         const url2 = `${process.env.REACT_APP_API_URL}/followed`
         const body={user_id: Number(params), follower_id: logged.id }
@@ -44,7 +45,7 @@ export default function UserPage() {
             promise.catch((err)=> console.log(err.message))
         }
         else{
-            const body= {user_id: user.id, follower_id: logged.id}
+            const body= {user_id: Number(params), follower_id: logged.id}
             const url = `${process.env.REACT_APP_API_URL}/follow`
             const promise= axios.post(url, body)
             promise.then((res)=> {setFollowed(true);

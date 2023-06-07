@@ -9,22 +9,23 @@ export default function TimelinePage() {
 
     const [form, SetForm] = useState({ link: "", description: "" })
     const [inputValue, setInputValue] = useState("Muito maneiro esse tutorial de Material UI com React, deem uma olhada!");
-    const [editPost, setEditPost]=useState(false)
+    const [editPost, setEditPost]=useState({isActive:false, id:0})
     const [disabledInput, setDisabledInput] = useState(false)
-    const token = localStorage.getItem("token")
-    const image = localStorage.getItem("image")
+    const [posts, setPosts] = useState(null)
+    const user = JSON.parse(localStorage.getItem("user"))
 
     useEffect(()=>{
         const url = `${process.env.REACT_APP_API_URL}/timeline`
-        const config = {headers: {Authorization: `Bearer ${token}`}}
+        const config = {headers: {Authorization: `Bearer ${user.token}`}}
         axios.get(url,config)
             .then((res)=>{
                 console.log(res.data)
+                setPosts(res.data)
             })
             .catch((err)=>{
                 console.log(err)
             })
-    },[token])
+    },[user.token])
 
   
 
@@ -36,7 +37,7 @@ export default function TimelinePage() {
     function publish(e) {
         e.preventDefault()
         const URL = `${process.env.REACT_APP_API_URL}/timeline`
-        const config = {headers: {Authorization: `Bearer ${token}`}}
+        const config = {headers: {Authorization: `Bearer ${user.token}`}}
         console.log(form)
         axios.post(URL, form, config)
             .then(res => {
@@ -68,7 +69,7 @@ export default function TimelinePage() {
         setDisabledInput(true)
 
         const url = `${process.env.REACT_APP_API_URL}/posts/${postId}`
-        const config = {headers: {Authorization: `Bearer ${token}`}}
+        const config = {headers: {Authorization: `Bearer ${user.token}`}}
         const body = {description: inputValue}
         axios.put(url,body, config)
             .then(()=>{
@@ -94,7 +95,7 @@ export default function TimelinePage() {
     return (
         <Screen>
 
-            <MenuBarComponent image={image}/>
+            <MenuBarComponent image={user.image}/>
 
             <ContainerTimeline>
                 <h1>Timeline</h1>
@@ -120,38 +121,59 @@ export default function TimelinePage() {
                         <button type="submit"> Publish </button>
                     </Form>
                 </WritePost>
-                <Posts>
-                    <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/>
-                    <PostInfos>
-                        <NamePostContainer>
-                            <h2>Nome usuário</h2>
-                            <TiPencil onClick={()=>{
-                                editPost?setEditPost(false):setEditPost(true);
-                                escapeInputEditPost();
-                                }}
-                                size={23} 
-                                color="#FFF"
-                            />
-                            <FiTrash size={23} color="#FFF"/>
-                        </NamePostContainer>
-                        {
-                            editPost?
-                                <InputEdition
-                                    type="text"
-                                    value={inputValue}
-                                    onChange={(e)=>setInputValue(e.target.value)}
-                                    disabled={disabledInput}
-                                    onKeyDown={handleKeyDown}
-                                    autoFocus
-                                />                            
-                            :
-                            <p>Muito maneiro esse tutorial de Material UI com React, deem uma olhada!</p>
-                        }
-                        <PostLink>
-                            <img src="img/link.png" alt=""/>
-                        </PostLink>
-                    </PostInfos>
-                </Posts>
+                {
+                    posts?
+                    posts.map((post)=>(
+                        <Posts key={post.id}>
+                            <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/>
+                            <PostInfos>
+
+                                {
+                                    user.id === post.user_id?
+                                    <NamePostContainer>
+                                        <h2>Nome usuário</h2>
+                                        <TiPencil onClick={()=>{
+                                            editPost.isActive?
+                                            setEditPost({isActive:false, id: post.id}):
+                                            setEditPost({isActive:true, id: post.id});
+                                            escapeInputEditPost();
+                                            setInputValue(post.description)
+                                            }}
+                                            size={23} 
+                                            color="#FFF"
+                                        />
+                                        <FiTrash size={23} color="#FFF"/>
+                                    </NamePostContainer>
+                                    :
+                                    <NamePostContainer>
+                                        <h2>Nome usuário</h2>
+                                    </NamePostContainer>
+                                }
+
+                                
+                                {
+                                    editPost && editPost.id===post.id?
+                                        <InputEdition
+                                            type="text"
+                                            value={inputValue}
+                                            onChange={(e)=>setInputValue(e.target.value)}
+                                            disabled={disabledInput}
+                                            onKeyDown={(e)=>handleKeyDown(e,post.id)}
+                                            autoFocus
+                                        />                            
+                                    :
+                                    <p>{post.description}</p>
+                                }
+                                <PostLink>
+                                    <img src="img/link.png" alt=""/>
+                                </PostLink>
+                            </PostInfos>
+                        </Posts>
+                    ))
+                :
+                <Posts>Ainda não há posts</Posts>
+                }
+                
             </ContainerTimeline>
         </Screen>
     )

@@ -37,20 +37,29 @@ export default function MenuBarComponent({image}){
         <Header>
             <h1>linkr</h1>
             <SearchContainer>
-            <Sear as={DebounceInput}
-             debounceTimeout={300}
-             type="text"
-             placeholder={'Search for people and friends'}
-             onChange={Search}/>
-             {result.length > 0 ? <Container>
-                {result.map((i) => <ResultBox>
-                    <Link to={`user/${i.id}`}>
-                        <img src={i.image} alt="profile"/>
-                        <div>{i.username}</div>
-                    </Link>
-                </ResultBox> )}
-             </Container> : <div></div>}
-             <MagnifyingGlass>{AiOutlineSearch}</MagnifyingGlass>
+                <Sear as={DebounceInput}
+                debounceTimeout={300}
+                type="text"
+                placeholder={'Search for people and friends'}
+                onChange={Search}/>
+                {
+                    result.length > 0 ? 
+                        <Container>
+                            {
+                                result.map((i) => (
+                                <ResultBox>
+                                    <Link to={`user/${i.id}`}>
+                                        <img src={i.image} alt="profile"/>
+                                        <div>{i.username}</div>
+                                    </Link>
+                                </ResultBox>) 
+                                )
+                            }
+                        </Container> 
+                        : 
+                        <div></div>
+                }
+                <MagnifyingGlass>{AiOutlineSearch}</MagnifyingGlass>
             </SearchContainer>
             <Logout>
                 <IconContainer>

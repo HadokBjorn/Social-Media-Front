@@ -28,10 +28,7 @@ export default function LoginPage(){
         const url = `${process.env.REACT_APP_API_URL}/login`
         axios.post(url, form)
             .then((res)=>{
-                console.log(res.data)
-                localStorage.setItem("token", res.data.token)
-                localStorage.setItem("username", res.data.username)
-                localStorage.setItem("image", res.data.image)
+                localStorage.setItem("user", JSON.stringify(res.data))
                 navigate("/timeline")
             })
             .catch((err)=>{

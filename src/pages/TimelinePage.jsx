@@ -5,19 +5,24 @@ import MenuBarComponent from "../components/MenuBarComponent";
 import {FiTrash} from "react-icons/fi"
 import {TiPencil} from "react-icons/ti"
 import ModalComponent from "../components/ModalComponent";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function TimelinePage() {
 
     const [form, SetForm] = useState({ link: "", description: "" })
-    const [inputValue, setInputValue] = useState("Muito maneiro esse tutorial de Material UI com React, deem uma olhada!");
+    const [inputValue, setInputValue] = useState("");
     const [editPost, setEditPost]=useState({isActive:false, id:0})
     const [disabledInput, setDisabledInput] = useState(false)
     const [deletePost, setDeletePost] = useState(false)
     const [posts, setPosts] = useState(null)
+    const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user"))
 
     useEffect(()=>{
+
+        if (!user.token) {
+            return;
+          }
         const url = `${process.env.REACT_APP_API_URL}/timeline`
         const config = {headers: {Authorization: `Bearer ${user.token}`}}
         axios.get(url,config)
@@ -28,7 +33,7 @@ export default function TimelinePage() {
             .catch((err)=>{
                 console.log(err)
             })
-    },[user.token, deletePost])
+    },[user.token])
 
   
 
@@ -76,7 +81,8 @@ export default function TimelinePage() {
         const body = {description: inputValue}
         axios.put(url,body, config)
             .then(()=>{
-                setEditPost(false)
+                setEditPost({isActive:false, id: postId})
+                posts.find(item => (item.id===postId)).description = inputValue;
             })
             .catch((err)=>{
                 console.log(err)
@@ -99,6 +105,7 @@ export default function TimelinePage() {
         <Screen>
 
             <MenuBarComponent image={user.image}/>
+
             <ContainerTimeline>
                 <h1>Timeline</h1>
                 <WritePost>
@@ -129,39 +136,39 @@ export default function TimelinePage() {
                         <Posts key={post.id}>
                             <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/>
                             <PostInfos>
+                                <NamePostContainer>
+                                    <h2 onClick={()=>{navigate(`user/${post.user_id}`)}}>Nome usuário</h2>
+                                    {
+                                        user.id === post.user_id?
+                                        <div className="icons-container">
+                                            <TiPencil onClick={()=>{
+                                                editPost.isActive?
+                                                setEditPost({isActive:false, id: post.id}):
+                                                setEditPost({isActive:true, id: post.id});
+                                                escapeInputEditPost();
+                                                setInputValue(post.description)
+                                                }}
+                                                size={23} 
+                                                color="#FFF"
+                                            />
+                                            <FiTrash 
+                                                size={23} 
+                                                color="#FFF"
+                                                onClick={()=>setDeletePost(true)}
+                                            />
+                                        </div> : ""
+                                    }
+                                    
+                                    
 
-                                {
-                                    user.id === post.user_id?
-                                    <NamePostContainer>
-                                        <Link to={`user/${post.user_id}`}><h2>Nome usuário</h2></Link>
-                                        <TiPencil onClick={()=>{
-                                            editPost.isActive?
-                                            setEditPost({isActive:false, id: post.id}):
-                                            setEditPost({isActive:true, id: post.id});
-                                            escapeInputEditPost();
-                                            setInputValue(post.description)
-                                            }}
-                                            size={23} 
-                                            color="#FFF"
-                                        />
-                                        <FiTrash 
-                                        size={23} 
-                                        color="#FFF"
-                                        onClick={()=>setDeletePost(true)}
-                                        />
+                                    { deletePost ? <ModalComponent token={user.token} postId={post.id} setDeletePost={setDeletePost}/> : "" }
 
-                                        { deletePost ? <ModalComponent token={user.token} postId={post.id} setDeletePost={setDeletePost}/> : "" }
-
-                                    </NamePostContainer>
-                                    :
-                                    <NamePostContainer>
-                                        <Link to={`user/${post.user_id}`}><h2>Nome usuário</h2></Link>
-                                    </NamePostContainer>
-                                }
+                                </NamePostContainer>
+                                
 
                                 
                                 {
-                                    editPost && editPost.id===post.id?
+                                    editPost.isActive && editPost.id===post.id?
                                         <InputEdition
                                             type="text"
                                             value={inputValue}
@@ -343,6 +350,15 @@ const NamePostContainer = styled.div`
 
     margin-top: 20px;
     margin-bottom: 7px;
+    h2{
+        width: auto;
+    }
+
+    .icons-container{
+        display: flex;
+        align-items: center;
+        gap: 12.53px;
+    }
 `
 const InputEdition = styled.textarea`
     background: #FFFFFF;

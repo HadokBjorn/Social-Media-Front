@@ -109,7 +109,7 @@ export default function TimelinePage() {
             <ContainerTimeline>
                 <h1>Timeline</h1>
                 <WritePost>
-                    <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/>
+                    <img src={user.image ? user.image : "https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"} alt=""/>
                     <Form onSubmit={publish}>
                         <p>What are you going to share today?</p>
                         <LinkURL
@@ -134,10 +134,10 @@ export default function TimelinePage() {
                     posts?
                     posts.map((post)=>(
                         <Posts key={post.id}>
-                            <img src="https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg" alt=""/>
+                            <img src={post.image?post.image : "https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"} alt=""/>
                             <PostInfos>
                                 <NamePostContainer>
-                                    <h2 onClick={()=>{navigate(`user/${post.user_id}`)}}>Nome usuário</h2>
+                                    <h2 onClick={()=>{navigate(`user/${post.user_id}`)}}>{post.username}</h2>
                                     {
                                         user.id === post.user_id?
                                         <div className="icons-container">

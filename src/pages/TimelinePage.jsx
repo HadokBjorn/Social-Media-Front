@@ -33,7 +33,7 @@ export default function TimelinePage() {
             .catch((err)=>{
                 console.log(err)
             })
-    },[user.token])
+    },[user.token, deletePost])
 
   
 

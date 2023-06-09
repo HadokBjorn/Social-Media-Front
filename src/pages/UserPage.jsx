@@ -11,17 +11,20 @@ export default function UserPage() {
     const [followed, setFollowed]= useState(false)
     const [idfollow, setIdfollow]= useState(0)
     const [disabled, setDisabled]= useState(false)
+    const [user,setUser]= useState([])
     const logged = JSON.parse(localStorage.getItem("user"))
     const params= useParams()
 
     useEffect(() => {
         console.log(params)
-        const url1 = `${process.env.REACT_APP_API_URL}/user/:id`
+        console.log(logged.id)
+        const url1 = `${process.env.REACT_APP_API_URL}/user/${Number(params.id)}`
         const url2 = `${process.env.REACT_APP_API_URL}/followed`
         const body={user_id: Number(params.id), follower_id: logged.id }
         axios
           .get(url1)
-          .then((res) => setPosts(res.data))
+          .then((res) => {setPosts(res.data);
+            setUser(res.data[res.data.length -1])})
           .catch((err) => console.log(err.message));
         
         let promise= axios.post(url2, body)
@@ -30,12 +33,13 @@ export default function UserPage() {
         }})
         promise.catch((err) => console.log(err.message))
 
-      }, []);
+      }, [logged.id, params]);
 
     const navigate = useNavigate()
 
+    console.log(posts)
 
-    let user= posts.pop()
+
 
     function Follow(){
         if (followed){
@@ -44,7 +48,8 @@ export default function UserPage() {
             const url = `${process.env.REACT_APP_API_URL}/unfollow`
             const promise= axios.post(url, body)
             promise.then((res)=> {setFollowed(false);
-            setDisabled(false)})
+            setDisabled(false);
+        })
             promise.catch((err)=> alert("A operação não pode ser realizada, tente novamente!"))
         }
         else{
@@ -54,7 +59,8 @@ export default function UserPage() {
             const promise= axios.post(url, body)
             promise.then((res)=> {setFollowed(true);
             setIdfollow(res.data);
-            setDisabled(false)})
+            setDisabled(false);
+        console.log(res.data)})
             promise.catch((err)=> alert("A operação não pode ser realizada, tente novamente!"))
         }
     }
@@ -67,17 +73,15 @@ export default function UserPage() {
                      <h1>{user?.username}'s posts</h1>
                      <FollowButton disabled={disabled} follow={followed} onClick={Follow}>{!followed ? "Follow"  : "Unfollow"}</FollowButton>
                 </HeaderTimeline>
-                <Posts>
-                    {posts?.map((i) => <div><img src={user?.image} alt="profile"/>
+                    {posts?.map((i) => i === posts[posts.length-1] ? <div></div> :  <Posts><img src={user?.image} alt="profile"/>
                     <PostInfos>
                         <h2>{user?.username}</h2>
-                        <p1>{i.description}</p1>
+                        <div>{i.description}</div>
                         <PostLink>
-                            <img src="img/link.png"  alt="link"/>
+                            <img src={i.link}  alt="link"/>
                         </PostLink>
-                    </PostInfos></div>)}
-    
-                </Posts>
+                    </PostInfos></Posts>)}
+
             </ContainerTimeline>
         </Screen>
     )
@@ -138,7 +142,7 @@ h2{
     margin-top: 20px;
     margin-bottom: 7px;
 }
-p1{
+div{
     width: 502px;
     font-family: 'Lato';
     font-style: normal;

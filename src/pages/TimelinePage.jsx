@@ -220,7 +220,7 @@ export default function TimelinePage() {
                                         </div>
                                     </li>
                                     <li className="container-user-comment">
-                                        <img className="user-image" src="" alt=""/>
+                                        <img className="user-image" src={user.image} alt=""/>
                                         <form className="comment-input-container">
                                             <input type="text" placeholder="write a comment..." autoFocus/>
                                             <button>

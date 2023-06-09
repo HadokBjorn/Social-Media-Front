@@ -148,7 +148,7 @@ export default function TimelinePage() {
                                             size={23} 
                                             color="#fff"
                                         />
-                                        <p>0 comments</p>
+                                        <p>{post.comment_count} comments</p>
                                     </article>
                                     <article className="container-interaction-icons">
                                         <BiRepost size={23} color="#fff"/>

@@ -113,7 +113,7 @@ const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed;
+    position: relative;
     top: 0;
 
     h1{
@@ -137,6 +137,8 @@ const Logout = styled.div`
         height: 53px;
         border-radius: 26.5px;
         margin-right: 20px;
+        object-fit: cover;
+        object-position: center;
     }
 `
 const DropdownOptions = styled.ul`
@@ -178,20 +180,21 @@ const ClickOut = styled.article`
 `
 
 const Sear= styled.input`
-  width: 560px;
-  margin-top:12px;
-  max-width: 563px;
-  height: 45px;
-  border-radius: 8px;
-  border: none;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 19px;
-  line-height: 23px;
-  font-family: 'Lato';
-  padding-left: 12px;
-  padding-right: 40px;
-  z-index: 1;
+    width: 100%;
+    max-width: 560px;
+    margin-top:12px;
+    max-width: 563px;
+    height: 45px;
+    border-radius: 8px;
+    border: none;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 23px;
+    font-family: 'Lato';
+    padding-left: 12px;
+    padding-right: 40px;
+    z-index: 1;
   :focus{
     outline: none;
   }
@@ -200,13 +203,14 @@ const Sear= styled.input`
   };`;
 
   const Container = styled.div`
-  width:560px;
+  width: 100%;
+  max-width:560px;
   background-color: gray;
   margin-top:5px;
   border-radius: 0 0 8px 8px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   padding: 8px;
-  @media (max-width: 768px){
+  @media screen and (max-width: 768px){
     width: 100%;
     margin: 0 auto;
     margin-top: -6px;
@@ -214,12 +218,25 @@ const Sear= styled.input`
 `;
 
 const SearchContainer= styled.div `
+@media screen and (max-width: 765px) {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    top: 72px;
+    input{
+        width: 90%;
+    }
+}
 display:flex;
 flex-direction:column;
-height:100%;`
+height:100%;
+`
 
 const ResultBox= styled.div `
-width: 560px;
+width: 100%;
+max-width: 560px;
 display:flex;
 flex-direction:row;
 img{
@@ -227,6 +244,8 @@ img{
     height:30px;
     border-radius:8px;
     margin-left:5px;
+    object-fit: cover;
+    object-position: center;
 };
 div{
   font-weight: 400;

@@ -17,17 +17,16 @@ export default function UserPage() {
 
     useEffect(() => {
         console.log(params)
-        console.log(logged.id)
-        const url1 = `${process.env.REACT_APP_API_URL}/user/${Number(params.id)}`
+        const url1 = `${process.env.REACT_APP_API_URL}/user/${params.id}`
         const url2 = `${process.env.REACT_APP_API_URL}/followed`
-        const body={user_id: Number(params.id), follower_id: logged.id }
+        const body = {user_id: Number(params.id), follower_id: logged.id }
         axios
           .get(url1)
           .then((res) => {setPosts(res.data);
             setUser(res.data[res.data.length -1])})
           .catch((err) => console.log(err.message));
         
-        let promise= axios.post(url2, body)
+        let promise = axios.post(url2, body)
         promise.then((res)=> {if(res.data === true){
             setFollowed(true)
         }})
@@ -67,21 +66,29 @@ export default function UserPage() {
 
     return (
         <Screen>
-            <MenuBarComponent/>
+            <MenuBarComponent image={logged.image}/>
             <ContainerTimeline>
                 <HeaderTimeline>
                      <h1>{user?.username}'s posts</h1>
                      <FollowButton disabled={disabled} follow={followed} onClick={Follow}>{!followed ? "Follow"  : "Unfollow"}</FollowButton>
                 </HeaderTimeline>
-                    {posts?.map((i) => i === posts[posts.length-1] ? <div></div> :  <Posts><img src={user?.image} alt="profile"/>
-                    <PostInfos>
-                        <h2>{user?.username}</h2>
-                        <div>{i.description}</div>
-                        <PostLink>
-                            <img src={i.link}  alt="link"/>
-                        </PostLink>
-                    </PostInfos></Posts>)}
-
+                <Posts>
+                    {
+                        posts?.map((i) => (
+                            <div key={i.id}>
+                                <img src={user?.image} alt="profile"/>
+                                <PostInfos>
+                                    <h2>{user?.username}</h2>
+                                    <p>{i.description}</p>
+                                    <PostLink>
+                                        <img src="img/link.png"  alt="link"/>
+                                    </PostLink>
+                                </PostInfos>
+                            </div>
+                        ))
+                    }
+    
+                </Posts>
             </ContainerTimeline>
         </Screen>
     )
@@ -142,7 +149,7 @@ h2{
     margin-top: 20px;
     margin-bottom: 7px;
 }
-div{
+p{
     width: 502px;
     font-family: 'Lato';
     font-style: normal;

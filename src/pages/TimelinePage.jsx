@@ -6,6 +6,9 @@ import {FiTrash} from "react-icons/fi"
 import {TiPencil} from "react-icons/ti"
 import ModalComponent from "../components/ModalComponent";
 import { useNavigate } from "react-router-dom";
+import { AiOutlineHeart, AiOutlineComment } from "react-icons/ai"
+import { BiRepost } from "react-icons/bi"
+import { BsSend } from "react-icons/bs"
 
 export default function TimelinePage() {
 
@@ -15,6 +18,7 @@ export default function TimelinePage() {
     const [disabledInput, setDisabledInput] = useState(false)
     const [deletePost, setDeletePost] = useState(false)
     const [posts, setPosts] = useState(null)
+    const [openComments, setOpenComments] = useState(false)
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user"))
 
@@ -133,58 +137,102 @@ export default function TimelinePage() {
                 {
                     posts?
                     posts.map((post)=>(
-                        <Posts key={post.id}>
-                            <img src={post.image?post.image : "https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"} alt=""/>
-                            <PostInfos>
-                                <NamePostContainer>
-                                    <h2 onClick={()=>{navigate(`user/${post.user_id}`)}}>{post.username}</h2>
+                        <PostContainer key={post.id}>
+                            <Posts>
+                                <div className="container-image-and-comment">
+                                    <img className="user-image" src={post.image?post.image : "https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"} alt=""/>
+                                    <article className="container-interaction-icons">
+                                        <AiOutlineHeart size={23} color="#fff" />
+                                        <p>0 likes</p>
+                                    </article>
+                                    <article className="container-interaction-icons">
+                                        <AiOutlineComment
+                                            onClick={()=>openComments?setOpenComments(false):setOpenComments(true)} 
+                                            size={23} 
+                                            color="#fff"
+                                        />
+                                        <p>0 comments</p>
+                                    </article>
+                                    <article className="container-interaction-icons">
+                                        <BiRepost size={23} color="#fff"/>
+                                        <p>0 re-posts</p>
+                                    </article>
+                                </div>
+                                <PostInfos>
+                                    <NamePostContainer>
+                                        <h2 onClick={()=>{navigate(`user/${post.user_id}`)}}>{post.username}</h2>
+                                        {
+                                            user.id === post.user_id?
+                                            <div className="icons-container">
+                                                <TiPencil onClick={()=>{
+                                                    editPost.isActive?
+                                                    setEditPost({isActive:false, id: post.id}):
+                                                    setEditPost({isActive:true, id: post.id});
+                                                    escapeInputEditPost();
+                                                    setInputValue(post.description)
+                                                    }}
+                                                    size={23} 
+                                                    color="#FFF"
+                                                />
+                                                <FiTrash 
+                                                    size={23} 
+                                                    color="#FFF"
+                                                    onClick={()=>setDeletePost(true)}
+                                                />
+                                            </div> : ""
+                                        }
+                                        
+                                        
+
+                                        { deletePost ? <ModalComponent token={user.token} postId={post.id} setDeletePost={setDeletePost}/> : "" }
+
+                                    </NamePostContainer>
+                                    
+
+                                    
                                     {
-                                        user.id === post.user_id?
-                                        <div className="icons-container">
-                                            <TiPencil onClick={()=>{
-                                                editPost.isActive?
-                                                setEditPost({isActive:false, id: post.id}):
-                                                setEditPost({isActive:true, id: post.id});
-                                                escapeInputEditPost();
-                                                setInputValue(post.description)
-                                                }}
-                                                size={23} 
-                                                color="#FFF"
-                                            />
-                                            <FiTrash 
-                                                size={23} 
-                                                color="#FFF"
-                                                onClick={()=>setDeletePost(true)}
-                                            />
-                                        </div> : ""
+                                        editPost.isActive && editPost.id===post.id?
+                                            <InputEdition
+                                                type="text"
+                                                value={inputValue}
+                                                onChange={(e)=>setInputValue(e.target.value)}
+                                                disabled={disabledInput}
+                                                onKeyDown={(e)=>handleKeyDown(e,post.id)}
+                                                autoFocus
+                                            />                            
+                                        :
+                                        <p>{post.description}</p>
                                     }
-                                    
-                                    
+                                    <PostLink>
+                                        <h2>Aqui virá o link</h2>
+                                        <img src="img/link.png" alt=""/>
+                                    </PostLink>
+                                </PostInfos>
+                            </Posts>
+                            {
+                                openComments?
+                                <CommentsContainer>
+                                    <li>
+                                        <img className="user-image" src="" alt=""/>
+                                        <div>
+                                            <h2>Nome do usuário <span>• following</span></h2>
+                                            <p>Esse é meu comentário</p>
+                                        </div>
+                                    </li>
+                                    <li className="container-user-comment">
+                                        <img className="user-image" src={user.image} alt=""/>
+                                        <form className="comment-input-container">
+                                            <input type="text" placeholder="write a comment..." autoFocus/>
+                                            <button>
+                                                <BsSend size={16} color="#fff"/>
+                                            </button>
+                                        </form>
+                                    </li>
+                                </CommentsContainer>
+                                : ""
+                            }
+                        </PostContainer>
 
-                                    { deletePost ? <ModalComponent token={user.token} postId={post.id} setDeletePost={setDeletePost}/> : "" }
-
-                                </NamePostContainer>
-                                
-
-                                
-                                {
-                                    editPost.isActive && editPost.id===post.id?
-                                        <InputEdition
-                                            type="text"
-                                            value={inputValue}
-                                            onChange={(e)=>setInputValue(e.target.value)}
-                                            disabled={disabledInput}
-                                            onKeyDown={(e)=>handleKeyDown(e,post.id)}
-                                            autoFocus
-                                        />                            
-                                    :
-                                    <p>{post.description}</p>
-                                }
-                                <PostLink>
-                                    <img src="img/link.png" alt=""/>
-                                </PostLink>
-                            </PostInfos>
-                        </Posts>
                     ))
                 :
                 <Posts>Ainda não há posts</Posts>
@@ -204,7 +252,8 @@ flex-direction: column;
 align-items: center;
 margin-top: 72px;
 h1{
-    width: 611px;
+    width: 90%;
+    max-width: 611px;
     font-family: 'Oswald';
     font-style: normal;
     font-weight: 700;
@@ -217,13 +266,17 @@ h1{
 `
 const WritePost = styled.div`
 display: flex;
-width: 611px;
+align-items: center;
+justify-content: center;
+width: 100%;
+max-width: 611px;
 height: 209px;
 background: #FFFFFF;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 16px;
 margin-bottom: 40px;
 img{
+    display: none;
     width: 50px;
     height: 50px;
     border-radius: 26.5px;
@@ -232,7 +285,7 @@ img{
 }
 `
 const LinkURL = styled.input`
-    width: 503px;
+    width: inherit;
     height: 30px;
     background: #EFEFEF;
     border-radius: 5px;
@@ -246,7 +299,7 @@ const LinkURL = styled.input`
     color: #111;
 `
 const Tittle = styled.input`
-width: 502px;
+width: inherit;
 height: 66px;
 background: #EFEFEF;
 border-radius: 5px;
@@ -261,8 +314,10 @@ color: #111;
 const Form = styled.form`
 display: flex;
 flex-direction: column;
-width: 502px;
-margin-left: 15px;
+align-items: center;
+justify-content: center;
+width: 100%;
+padding: 10px 15px;
 margin-top: 18px;
 p{
     font-family: 'Lato';
@@ -286,29 +341,65 @@ button{
     color: #FFFFFF;
     border: none;
     margin-top: 6px;
-    margin-left: 390px;
+    align-self: flex-end;
 }
 `
+const PostContainer = styled.article`
+    background-color: #1E1E1E;
+    width: 100%;
+    height: auto;
+    max-width: 611px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+
+    .user-image{
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 26.5px;
+    }
+`
 const Posts = styled.div`
-width: 611px;
+width: 100%;
+max-width: 611px;
 height: 276px;
 background: #171717;
 border-radius: 16px;
-margin-bottom: 30px;
 display: flex;
-img{
-    width: 50px;
-    height: 50px;
-    border-radius: 26.5px;
-    margin-left: 15px;
-    margin-top: 18px;
+gap: 14px;
+padding: 10px 15px;
+.container-image-and-comment{
+    width: 67px;
+    height: 100%;
+
+    display: flex;
+    gap: 19px;
+    flex-direction: column;
+    align-items: center;
+
+    .container-interaction-icons{
+        display: flex;
+        gap: 4px;
+        flex-direction: column;
+        align-items: center;
+        p{
+            font-family: 'Lato';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 11px;
+            line-height: 13px;
+            text-align: center;
+
+            color: #FFFFFF;
+        }
+    }
 }
 `
 const PostInfos = styled.div`
-width: 502px;
-margin-left: 15px;
+width: 100%;
 h2{
-    width: 502px;
+    width: inherit;
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
@@ -318,7 +409,7 @@ h2{
     
 }
 p{
-    width: 502px;
+    width: inherit;
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
@@ -329,17 +420,25 @@ p{
 `
 const PostLink = styled.div`
 box-sizing: border-box;
-width: 503px;
+width: 100%;
 height: 155px;
 border: 1px solid #4D4D4D;
 border-radius: 11px;
 margin-top: 10px;
+
+display: flex;
+align-items: center;
+
+h2{
+    width: 100%;
+    text-align: center;
+}
+
 img{
     width: 153.44px;
     height: 155px;
     border-radius: 0px 12px 13px 0px;
     margin-bottom: 0px;
-    margin-left: 349.56px;
     margin-top: 0px;
 }
 `
@@ -348,10 +447,10 @@ const NamePostContainer = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    margin-top: 20px;
     margin-bottom: 7px;
     h2{
         width: auto;
+        cursor: pointer;
     }
 
     .icons-container{
@@ -378,4 +477,92 @@ const InputEdition = styled.textarea`
     font-size: 14px;
     line-height: 17px;
     color: #4C4C4C;
+`
+const CommentsContainer = styled.ul`
+    list-style: none;
+    border-radius: 16px;
+    padding: 10px 15px;
+
+    .container-user-comment{
+            border-bottom: none;
+        }
+
+    li{
+        border-bottom: 1px solid #353535;
+        transform: rotate(-0.1deg);
+        padding: 16px 0;
+
+        width: 100%;
+        height: auto;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+
+        .comment-input-container{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #252525;
+            border-radius: 8px;
+            height: 39px;
+
+            input{
+                background-color: #252525;
+                border-radius: 8px;
+                width: 95%;
+                height: inherit;
+                border: none;
+                padding: 11px 15px;
+
+                font-family: 'Lato';
+                font-style: italic;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 17px;
+                letter-spacing: 0.05em;
+                color: #fff;
+            }
+            button{
+                width: 30px;
+                height: 30px;
+                border: none;
+                padding: 0;
+                background-color: transparent;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        div{
+            width: 100%;            
+            h2{
+                font-family: 'Lato';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 17px;
+                color: #F3F3F3;
+            }
+            p{
+                font-family: 'Lato';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 17px;
+                color: #ACACAC;
+            }
+            span{
+                font-family: 'Lato';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 17px;
+                color: #565656;
+
+            }
+        }
+
+    }
 `

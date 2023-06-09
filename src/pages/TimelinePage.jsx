@@ -8,7 +8,7 @@ import ModalComponent from "../components/ModalComponent";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineHeart, AiOutlineComment } from "react-icons/ai"
 import { BiRepost } from "react-icons/bi"
-import { BsSend } from "react-icons/bs"
+import CommentsComponent from "../components/CommentsComponent";
 
 export default function TimelinePage() {
 
@@ -18,7 +18,7 @@ export default function TimelinePage() {
     const [disabledInput, setDisabledInput] = useState(false)
     const [deletePost, setDeletePost] = useState(false)
     const [posts, setPosts] = useState(null)
-    const [openComments, setOpenComments] = useState(false)
+    const [openComments, setOpenComments] = useState({isActive:false, id:0})
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user"))
 
@@ -38,8 +38,6 @@ export default function TimelinePage() {
                 console.log(err)
             })
     },[user.token, deletePost])
-
-  
 
     function handleForm(e) {
         const { name, value } = e.target
@@ -65,7 +63,6 @@ export default function TimelinePage() {
           setEditPost(false)
         }
     };
-
 
     function escapeInputEditPost(){
       
@@ -100,9 +97,7 @@ export default function TimelinePage() {
           e.preventDefault();
           updatePost(id)
         }
-      };
-
-    
+      }; 
         
 
     return (
@@ -147,7 +142,9 @@ export default function TimelinePage() {
                                     </article>
                                     <article className="container-interaction-icons">
                                         <AiOutlineComment
-                                            onClick={()=>openComments?setOpenComments(false):setOpenComments(true)} 
+                                            onClick={()=>openComments.isActive?
+                                                setOpenComments({isActive:false, id:post.id}):
+                                                setOpenComments({isActive:true, id:post.id})} 
                                             size={23} 
                                             color="#fff"
                                         />
@@ -210,25 +207,11 @@ export default function TimelinePage() {
                                 </PostInfos>
                             </Posts>
                             {
-                                openComments?
-                                <CommentsContainer>
-                                    <li>
-                                        <img className="user-image" src="" alt=""/>
-                                        <div>
-                                            <h2>Nome do usuário <span>• following</span></h2>
-                                            <p>Esse é meu comentário</p>
-                                        </div>
-                                    </li>
-                                    <li className="container-user-comment">
-                                        <img className="user-image" src={user.image} alt=""/>
-                                        <form className="comment-input-container">
-                                            <input type="text" placeholder="write a comment..." autoFocus/>
-                                            <button>
-                                                <BsSend size={16} color="#fff"/>
-                                            </button>
-                                        </form>
-                                    </li>
-                                </CommentsContainer>
+                                openComments.isActive && openComments.id===post.id?
+                                <CommentsComponent
+                                    postId={post.id}
+                                    setOpenComments={setOpenComments}
+                                />
                                 : ""
                             }
                         </PostContainer>
@@ -282,6 +265,9 @@ img{
     border-radius: 26.5px;
     margin-left: 15px;
     margin-top: 18px;
+    @media screen and (min-width: 768px) {
+        display: block;
+    }
 }
 `
 const LinkURL = styled.input`
@@ -477,92 +463,4 @@ const InputEdition = styled.textarea`
     font-size: 14px;
     line-height: 17px;
     color: #4C4C4C;
-`
-const CommentsContainer = styled.ul`
-    list-style: none;
-    border-radius: 16px;
-    padding: 10px 15px;
-
-    .container-user-comment{
-            border-bottom: none;
-        }
-
-    li{
-        border-bottom: 1px solid #353535;
-        transform: rotate(-0.1deg);
-        padding: 16px 0;
-
-        width: 100%;
-        height: auto;
-        display: flex;
-        align-items: center;
-        gap: 18px;
-
-        .comment-input-container{
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #252525;
-            border-radius: 8px;
-            height: 39px;
-
-            input{
-                background-color: #252525;
-                border-radius: 8px;
-                width: 95%;
-                height: inherit;
-                border: none;
-                padding: 11px 15px;
-
-                font-family: 'Lato';
-                font-style: italic;
-                font-weight: 400;
-                font-size: 14px;
-                line-height: 17px;
-                letter-spacing: 0.05em;
-                color: #fff;
-            }
-            button{
-                width: 30px;
-                height: 30px;
-                border: none;
-                padding: 0;
-                background-color: transparent;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        }
-
-        div{
-            width: 100%;            
-            h2{
-                font-family: 'Lato';
-                font-style: normal;
-                font-weight: 700;
-                font-size: 14px;
-                line-height: 17px;
-                color: #F3F3F3;
-            }
-            p{
-                font-family: 'Lato';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 14px;
-                line-height: 17px;
-                color: #ACACAC;
-            }
-            span{
-                font-family: 'Lato';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 14px;
-                line-height: 17px;
-                color: #565656;
-
-            }
-        }
-
-    }
 `

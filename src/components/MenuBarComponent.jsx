@@ -77,19 +77,17 @@ export default function MenuBarComponent({image}){
             }
             </SearchContainer>
             <Logout>
-                <IconContainer>
+                <IconContainer onClick={()=>openDropdown? setOpenDropdown(false):setOpenDropdown(true)}>
 
                 {
                     openDropdown?
                     <IoIosArrowUp
-                    onClick={()=>setOpenDropdown(false)} 
                     size={25} 
                     color="#FFF"
                     cursor={"pointer"}
                     />
                     :
                     <IoIosArrowDown 
-                    onClick={()=>setOpenDropdown(true)} 
                     size={25} 
                     color="#FFF"
                     cursor={"pointer"}
@@ -99,6 +97,7 @@ export default function MenuBarComponent({image}){
                 </IconContainer>
 
                 <img
+                onClick={()=>openDropdown? setOpenDropdown(false):setOpenDropdown(true)}
                 data-test="avatar"
                 src={image} 
                 alt="imagem do usuário"

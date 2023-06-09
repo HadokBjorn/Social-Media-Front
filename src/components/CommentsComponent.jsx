@@ -5,7 +5,7 @@ import axios from "axios";
 
 
 
-function CommentsComponent({setOpenComments, postId}){
+function CommentsComponent({setOpenComments, postId, postUserId}){
     const user = JSON.parse(localStorage.getItem("user"))
     const[notComments,setNotComments] = useState(null)
     const [updateComments, setUpdateComments] = useState(false);
@@ -44,6 +44,7 @@ function CommentsComponent({setOpenComments, postId}){
             console.log(res.data)
             inputRef.current.value="";
             setUpdateComments(true)
+            setOpenComments({isActive:false, id:0})
         })
         .catch((err)=>{
             console.log({message: err.response.data, status:err.response.status})
@@ -64,7 +65,14 @@ function CommentsComponent({setOpenComments, postId}){
                     <li key={comment.id}>
                         <img className="user-image" src={comment.image} alt=""/>
                         <div>
-                            <h2>{comment.username} {comment.user_id===user.id?<span>• post's author</span>:""}</h2>
+                            <h2>{comment.username}
+                                {comment.user_id===user.id && !comment.is_following?
+                                <span>• post's author</span>:
+                                comment.user_id===postUserId?
+                                <span>• following</span>
+                                : ""
+                                }
+                            </h2>
                             <p>{comment.comment}</p>
                         </div>
                     </li>

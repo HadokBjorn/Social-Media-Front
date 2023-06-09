@@ -210,6 +210,7 @@ export default function TimelinePage() {
                                 openComments.isActive && openComments.id===post.id?
                                 <CommentsComponent
                                     postId={post.id}
+                                    postUserId={post.user_id}
                                     setOpenComments={setOpenComments}
                                 />
                                 : ""

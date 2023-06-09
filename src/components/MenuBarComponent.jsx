@@ -12,10 +12,14 @@ export default function MenuBarComponent({image}){
     const [openDropdown, setOpenDropdown] = useState(false)
     const [busca, setBusca]= useState("")
     const [result, setResult]= useState([])
+    const logged = JSON.parse(localStorage.getItem("user"))
     
     function logout(){
         localStorage.clear()
         navigate("/")
+    }
+    function Travel(i){
+        navigate(`/user/${i.id}`)
     }
 
     function Search(event){
@@ -23,12 +27,13 @@ export default function MenuBarComponent({image}){
         const url = `${process.env.REACT_APP_API_URL}/search`
         if( busca.length >= 3){
             console.log(busca)
-            axios.post(url, {search: busca})
+            axios.post(url, {search: busca, id: logged.id.toString()})
             .then((res)=>{
                 setResult(res.data)
+                console.log(res.data)
             })
             .catch((err)=>{
-                console.log(err)
+                console.log(err.message)
             })
         }
     }
@@ -46,12 +51,13 @@ export default function MenuBarComponent({image}){
                     result.length > 0 ? 
                         <Container>
                             {
-                                result.map((i) => (
+                                result.map((i) => ( i === result[result.length-1] ? <div></div> :
                                 <ResultBox>
                                     <div> <img src={i.image} alt="profile"/></div>
-                                    <Link to={`user/${i.id}`}>
+                                    <Link to={`/user/${i.id}`}>
                                         <div>{i.username}</div>
                                     </Link>
+                                    <div>{result[result.length-1].includes(i.id) ? "Following" : "" }</div>
                                 </ResultBox>) 
                                 )
                             }

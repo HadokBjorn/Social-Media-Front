@@ -16,15 +16,15 @@ export default function UserPage() {
 
     useEffect(() => {
         console.log(params)
-        const url1 = `${process.env.REACT_APP_API_URL}/user/:id`
+        const url1 = `${process.env.REACT_APP_API_URL}/user/${params.id}`
         const url2 = `${process.env.REACT_APP_API_URL}/followed`
-        const body={user_id: Number(params.id), follower_id: logged.id }
+        const body = {user_id: Number(params.id), follower_id: logged.id }
         axios
           .get(url1)
           .then((res) => setPosts(res.data))
           .catch((err) => console.log(err.message));
         
-        let promise= axios.post(url2, body)
+        let promise = axios.post(url2, body)
         promise.then((res)=> {if(res.data === true){
             setFollowed(true)
         }})
@@ -68,14 +68,20 @@ export default function UserPage() {
                      <FollowButton disabled={disabled} follow={followed} onClick={Follow}>{!followed ? "Follow"  : "Unfollow"}</FollowButton>
                 </HeaderTimeline>
                 <Posts>
-                    {posts?.map((i) => <div><img src={user?.image} alt="profile"/>
-                    <PostInfos>
-                        <h2>{user?.username}</h2>
-                        <p1>{i.description}</p1>
-                        <PostLink>
-                            <img src="img/link.png"  alt="link"/>
-                        </PostLink>
-                    </PostInfos></div>)}
+                    {
+                        posts?.map((i) => (
+                            <div key={i.id}>
+                                <img src={user?.image} alt="profile"/>
+                                <PostInfos>
+                                    <h2>{user?.username}</h2>
+                                    <p>{i.description}</p>
+                                    <PostLink>
+                                        <img src="img/link.png"  alt="link"/>
+                                    </PostLink>
+                                </PostInfos>
+                            </div>
+                        ))
+                    }
     
                 </Posts>
             </ContainerTimeline>
@@ -138,7 +144,7 @@ h2{
     margin-top: 20px;
     margin-bottom: 7px;
 }
-p1{
+p{
     width: 502px;
     font-family: 'Lato';
     font-style: normal;

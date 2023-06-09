@@ -107,13 +107,14 @@ export default function TimelinePage() {
 
             <ContainerTimeline>
                 <h1>Timeline</h1>
-                <WritePost>
+                <WritePost data-test="publish-box">
                     <div className="writePost-image-container">
                         <img src={user.image ? user.image : "https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"} alt=""/>
                     </div>
                     <Form onSubmit={publish}>
                         <p>What are you going to share today?</p>
                         <LinkURL
+                            data-test="link"
                             name="link"
                             value={form.link}
                             onChange={handleForm}
@@ -122,25 +123,26 @@ export default function TimelinePage() {
                             placeholder="http://..."
                         />
                         <Tittle
+                            data-test="description"
                             name="description"
                             value={form.description}
                             onChange={handleForm}
                             type="text"
                             placeholder="Awesome article about #javascript"
                         />
-                        <button type="submit"> Publish </button>
+                        <button data-test="publish-btn" type="submit"> Publish </button>
                     </Form>
                 </WritePost>
                 {
                     posts?
                     posts.map((post)=>(
-                        <PostContainer key={post.id}>
+                        <PostContainer key={post.id} data-test="post">
                             <Posts>
                                 <div className="container-image-and-comment">
                                     <img className="user-image" src={post.image?post.image : "https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"} alt=""/>
                                     <article className="container-interaction-icons">
-                                        <AiOutlineHeart size={23} color="#fff" />
-                                        <p>0 likes</p>
+                                        <AiOutlineHeart data-test="like-btn" size={23} color="#fff" />
+                                        <p data-test="counter">0 likes</p>
                                     </article>
                                     <article className="container-interaction-icons">
                                         <AiOutlineComment
@@ -160,7 +162,7 @@ export default function TimelinePage() {
                                 </div>
                                 <PostInfos>
                                     <NamePostContainer>
-                                        <h2 onClick={()=>{navigate(`user/${post.user_id}`)}}>{post.username}</h2>
+                                        <h2 data-test="username" onClick={()=>{navigate(`user/${post.user_id}`)}}>{post.username}</h2>
                                         {
                                             user.id === post.user_id?
                                             <div className="icons-container">
@@ -205,9 +207,9 @@ export default function TimelinePage() {
                                                 autoFocus
                                             />                            
                                         :
-                                        <p>{post.description}</p>
+                                        <p data-test="description">{post.description}</p>
                                     }
-                                    <PostLink>
+                                    <PostLink data-test="link">
                                         <h2>Aqui virá o link</h2>
                                         <img src="img/link.png" alt=""/>
                                     </PostLink>

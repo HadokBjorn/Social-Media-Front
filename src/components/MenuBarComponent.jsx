@@ -46,6 +46,7 @@ export default function MenuBarComponent({image}){
             <Link to="/timeline"><h1>linkr</h1></Link>
             <SearchContainer>
                 <Sear as={DebounceInput}
+                data-test="search"
                 debounceTimeout={300}
                 type="text"
                 placeholder={'Search for people and friends'}
@@ -55,7 +56,7 @@ export default function MenuBarComponent({image}){
                         <Container>
                             {
                                 result.map((i) => ( i === result[result.length-1] ? <div></div> :
-                                <ResultBox>
+                                <ResultBox data-test="user-search">
                                     <div> <img src={i.image} alt="profile"/></div>
                                     <Link to={`/user/${i.id}`}>
                                         <div>{i.username}</div>

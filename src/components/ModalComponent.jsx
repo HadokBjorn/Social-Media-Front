@@ -45,8 +45,8 @@ function ModalComponent({postId, setDeletePost, token}){
                 <Modal onSubmit={deletePost}>
                     <h2>Are you sure you want to delete this post?</h2>
                     <ButtonContainer>
-                        <button onClick={()=>setDeletePost(false)} className="cancel">No, go back</button>
-                        <button type="submit" className="delete">Yes, delete it</button>
+                        <button data-test="cancel" onClick={()=>setDeletePost(false)} className="cancel">No, go back</button>
+                        <button data-test="confirm" type="submit" className="delete">Yes, delete it</button>
                     </ButtonContainer>
                 </Modal>
             }

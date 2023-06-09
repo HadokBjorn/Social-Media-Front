@@ -98,15 +98,16 @@ export default function MenuBarComponent({image}){
 
                 </IconContainer>
 
-                <img 
+                <img
+                data-test="avatar"
                 src={image} 
                 alt="imagem do usuário"
                 />
                 
                 {
                     openDropdown?
-                    <DropdownOptions>
-                        <li onClick={logout}>Logout</li>
+                    <DropdownOptions data-test="menu">
+                        <li data-test="logout" onClick={logout}>Logout</li>
                     </DropdownOptions>
                     :
                     ""

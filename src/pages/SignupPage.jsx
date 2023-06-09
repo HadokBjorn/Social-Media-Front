@@ -56,13 +56,13 @@ export default function SignupPage(){
         <PageContainer>
             <MenuTitleComponent/>
             <form onSubmit={register}>
-                <input placeholder="e-mail" type="email" required ref={email} />
-                <input placeholder="password" type="password" required ref={password} />
-                <input placeholder="username" type="text" required ref={username} />
-                <input placeholder="picture url" type="url" required ref={imageUrl} />
-                <button type="submit" disabled={buttonDisabled}>Sign Up</button>
+                <input data-test="email" placeholder="e-mail" type="email" required ref={email} />
+                <input data-test="password" placeholder="password" type="password" required ref={password} />
+                <input data-test="username" placeholder="username" type="text" required ref={username} />
+                <input data-test="picture-url" placeholder="picture url" type="url" required ref={imageUrl} />
+                <button data-test="sign-up-btn" type="submit" disabled={buttonDisabled}>Sign Up</button>
 
-                <Link to="/">Switch back to log in</Link>
+                <Link data-test="login-link" to="/">Switch back to log in</Link>
             </form>
         </PageContainer>
     )

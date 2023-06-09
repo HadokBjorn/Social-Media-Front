@@ -142,13 +142,14 @@ export default function TimelinePage() {
                                     </article>
                                     <article className="container-interaction-icons">
                                         <AiOutlineComment
+                                            data-test="comment-btn"
                                             onClick={()=>openComments.isActive?
                                                 setOpenComments({isActive:false, id:post.id}):
                                                 setOpenComments({isActive:true, id:post.id})} 
                                             size={23} 
                                             color="#fff"
                                         />
-                                        <p>{post.comment_count} comments</p>
+                                        <p data-test="comment-counter">{post.comment_count} comments</p>
                                     </article>
                                     <article className="container-interaction-icons">
                                         <BiRepost size={23} color="#fff"/>
@@ -161,7 +162,9 @@ export default function TimelinePage() {
                                         {
                                             user.id === post.user_id?
                                             <div className="icons-container">
-                                                <TiPencil onClick={()=>{
+                                                <TiPencil
+                                                data-test="edit-btn"
+                                                onClick={()=>{
                                                     editPost.isActive?
                                                     setEditPost({isActive:false, id: post.id}):
                                                     setEditPost({isActive:true, id: post.id});
@@ -171,7 +174,8 @@ export default function TimelinePage() {
                                                     size={23} 
                                                     color="#FFF"
                                                 />
-                                                <FiTrash 
+                                                <FiTrash
+                                                    data-test="delete-btn"
                                                     size={23} 
                                                     color="#FFF"
                                                     onClick={()=>setDeletePost(true)}
@@ -190,6 +194,7 @@ export default function TimelinePage() {
                                     {
                                         editPost.isActive && editPost.id===post.id?
                                             <InputEdition
+                                                data-test="edit-input"
                                                 type="text"
                                                 value={inputValue}
                                                 onChange={(e)=>setInputValue(e.target.value)}
@@ -212,6 +217,7 @@ export default function TimelinePage() {
                                     postId={post.id}
                                     postUserId={post.user_id}
                                     setOpenComments={setOpenComments}
+                                    posts={posts}
                                 />
                                 : ""
                             }

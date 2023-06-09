@@ -5,7 +5,7 @@ import axios from "axios";
 
 
 
-function CommentsComponent({setOpenComments, postId, postUserId}){
+function CommentsComponent({setOpenComments, postId, postUserId, posts}){
     const user = JSON.parse(localStorage.getItem("user"))
     const[notComments,setNotComments] = useState(null)
     const [updateComments, setUpdateComments] = useState(false);
@@ -45,6 +45,7 @@ function CommentsComponent({setOpenComments, postId, postUserId}){
             inputRef.current.value="";
             setUpdateComments(true)
             setOpenComments({isActive:false, id:0})
+            posts.find(item => (item.id===postId)).comment_count = Number(posts.find(item => (item.id===postId)).comment_count) + 1 ;
         })
         .catch((err)=>{
             console.log({message: err.response.data, status:err.response.status})
@@ -57,12 +58,12 @@ function CommentsComponent({setOpenComments, postId, postUserId}){
 
    
     return(
-        <CommentsContainer>
+        <CommentsContainer  data-test="comment-box">
             {
                 comments?
                 
                 comments.map((comment)=>(
-                    <li key={comment.id}>
+                    <li key={comment.id}  data-test="comment">
                         <img className="user-image" src={comment.image} alt=""/>
                         <div>
                             <h2>{comment.username}
@@ -89,8 +90,8 @@ function CommentsComponent({setOpenComments, postId, postUserId}){
             <li className="container-user-comment">
                 <img className="user-image" src={user.image} alt=""/>
                 <form onSubmit={sendComment} className="comment-input-container">
-                    <input type="text" placeholder="write a comment..."  autoFocus ref={inputRef}/>
-                    <button type="submit">
+                    <input  data-test="comment-input" type="text" placeholder="write a comment..."  autoFocus ref={inputRef}/>
+                    <button data-test="comment-submit" type="submit">
                         <BsSend size={16} color="#fff"/>
                     </button>
                 </form>

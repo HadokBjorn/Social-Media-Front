@@ -54,12 +54,12 @@ export default function LoginPage(){
         <PageContainer>
             <MenuTitleComponent/>
             <form onSubmit={register}>
-                <input placeholder="e-mail" type="email" required ref={email} />
-                <input placeholder="password" type="password" required ref={password} />
+                <input data-test="email" placeholder="e-mail" type="email" required ref={email} />
+                <input data-test="password" placeholder="password" type="password" required ref={password} />
                 
-                <button type="submit" disabled={buttonDisabled}>Log In</button>
+                <button data-test="login-btn" type="submit" disabled={buttonDisabled}>Log In</button>
 
-                <Link to="/sign-up">First time? Create an account!</Link>
+                <Link data-test="sign-up-link" to="/sign-up">First time? Create an account!</Link>
             </form>
         </PageContainer>
     )

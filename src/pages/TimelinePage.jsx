@@ -6,6 +6,8 @@ import {FiTrash} from "react-icons/fi"
 import {TiPencil} from "react-icons/ti"
 import ModalComponent from "../components/ModalComponent";
 import { useNavigate } from "react-router-dom";
+import { AiOutlineHeart, AiOutlineComment } from "react-icons/ai"
+import { BiRepost } from "react-icons/bi"
 
 export default function TimelinePage() {
 
@@ -134,7 +136,21 @@ export default function TimelinePage() {
                     posts?
                     posts.map((post)=>(
                         <Posts key={post.id}>
-                            <img src={post.image?post.image : "https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"} alt=""/>
+                            <div className="container-image-and-comment">
+                                <img src={post.image?post.image : "https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"} alt=""/>
+                                <article className="container-interaction-icons">
+                                    <AiOutlineHeart size={23} color="#fff"/>
+                                    <p>0 likes</p>
+                                </article>
+                                <article className="container-interaction-icons">
+                                    <AiOutlineComment size={23} color="#fff"/>
+                                    <p>0 likes</p>
+                                </article>
+                                <article className="container-interaction-icons">
+                                    <BiRepost size={23} color="#fff"/>
+                                    <p>0 re-posts</p>
+                                </article>
+                            </div>
                             <PostInfos>
                                 <NamePostContainer>
                                     <h2 onClick={()=>{navigate(`user/${post.user_id}`)}}>{post.username}</h2>
@@ -308,10 +324,37 @@ margin-bottom: 30px;
 display: flex;
 gap: 14px;
 padding: 10px 15px;
-img{
+.container-image-and-comment{
     width: 50px;
-    height: 50px;
-    border-radius: 26.5px;
+    height: 100%;
+
+    display: flex;
+    gap: 19px;
+    flex-direction: column;
+    align-items: center;
+
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 26.5px;
+    }
+
+    .container-interaction-icons{
+        display: flex;
+        gap: 4px;
+        flex-direction: column;
+        align-items: center;
+        p{
+            font-family: 'Lato';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 11px;
+            line-height: 13px;
+            text-align: center;
+
+            color: #FFFFFF;
+        }
+    }
 }
 `
 const PostInfos = styled.div`

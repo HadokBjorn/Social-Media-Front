@@ -181,6 +181,7 @@ export default function TimelinePage() {
                                     <p>{post.description}</p>
                                 }
                                 <PostLink>
+                                    <h2>Aqui virá o link</h2>
                                     <img src="img/link.png" alt=""/>
                                 </PostLink>
                             </PostInfos>
@@ -197,6 +198,7 @@ export default function TimelinePage() {
 
 const Screen = styled.div`
 background-color: #4D4D4D;
+height: 100vh;
 `
 const ContainerTimeline = styled.div`
 display: flex;
@@ -204,7 +206,8 @@ flex-direction: column;
 align-items: center;
 margin-top: 72px;
 h1{
-    width: 611px;
+    width: 90%;
+    max-width: 611px;
     font-family: 'Oswald';
     font-style: normal;
     font-weight: 700;
@@ -217,13 +220,17 @@ h1{
 `
 const WritePost = styled.div`
 display: flex;
-width: 611px;
+align-items: center;
+justify-content: center;
+width: 100%;
+max-width: 611px;
 height: 209px;
 background: #FFFFFF;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 16px;
 margin-bottom: 40px;
 img{
+    display: none;
     width: 50px;
     height: 50px;
     border-radius: 26.5px;
@@ -232,7 +239,7 @@ img{
 }
 `
 const LinkURL = styled.input`
-    width: 503px;
+    width: inherit;
     height: 30px;
     background: #EFEFEF;
     border-radius: 5px;
@@ -246,7 +253,7 @@ const LinkURL = styled.input`
     color: #111;
 `
 const Tittle = styled.input`
-width: 502px;
+width: inherit;
 height: 66px;
 background: #EFEFEF;
 border-radius: 5px;
@@ -261,8 +268,10 @@ color: #111;
 const Form = styled.form`
 display: flex;
 flex-direction: column;
-width: 502px;
-margin-left: 15px;
+align-items: center;
+justify-content: center;
+width: 100%;
+padding: 10px 15px;
 margin-top: 18px;
 p{
     font-family: 'Lato';
@@ -286,29 +295,29 @@ button{
     color: #FFFFFF;
     border: none;
     margin-top: 6px;
-    margin-left: 390px;
+    align-self: flex-end;
 }
 `
 const Posts = styled.div`
-width: 611px;
+width: 100%;
+max-width: 611px;
 height: 276px;
 background: #171717;
 border-radius: 16px;
 margin-bottom: 30px;
 display: flex;
+gap: 14px;
+padding: 10px 15px;
 img{
     width: 50px;
     height: 50px;
     border-radius: 26.5px;
-    margin-left: 15px;
-    margin-top: 18px;
 }
 `
 const PostInfos = styled.div`
-width: 502px;
-margin-left: 15px;
+width: 100%;
 h2{
-    width: 502px;
+    width: inherit;
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
@@ -318,7 +327,7 @@ h2{
     
 }
 p{
-    width: 502px;
+    width: inherit;
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
@@ -329,17 +338,25 @@ p{
 `
 const PostLink = styled.div`
 box-sizing: border-box;
-width: 503px;
+width: 100%;
 height: 155px;
 border: 1px solid #4D4D4D;
 border-radius: 11px;
 margin-top: 10px;
+
+display: flex;
+align-items: center;
+
+h2{
+    width: 100%;
+    text-align: center;
+}
+
 img{
     width: 153.44px;
     height: 155px;
     border-radius: 0px 12px 13px 0px;
     margin-bottom: 0px;
-    margin-left: 349.56px;
     margin-top: 0px;
 }
 `
@@ -348,7 +365,6 @@ const NamePostContainer = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    margin-top: 20px;
     margin-bottom: 7px;
     h2{
         width: auto;

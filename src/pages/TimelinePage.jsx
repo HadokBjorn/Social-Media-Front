@@ -214,7 +214,6 @@ export default function TimelinePage() {
 
 const Screen = styled.div`
 background-color: #4D4D4D;
-height: 100vh;
 `
 const ContainerTimeline = styled.div`
 display: flex;
@@ -336,6 +335,8 @@ padding: 10px 15px;
     img{
         width: 50px;
         height: 50px;
+        object-fit: cover;
+        object-position: center;
         border-radius: 26.5px;
     }
 
@@ -411,6 +412,7 @@ const NamePostContainer = styled.div`
     margin-bottom: 7px;
     h2{
         width: auto;
+        cursor: pointer;
     }
 
     .icons-container{

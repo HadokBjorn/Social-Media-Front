@@ -225,6 +225,9 @@ const SearchContainer= styled.div `
     align-items: center;
     width: 100%;
     top: 72px;
+    input{
+        width: 90%;
+    }
 }
 display:flex;
 flex-direction:column;

@@ -219,8 +219,9 @@ const SearchContainer= styled.div `
 @media screen and (max-width: 765px) {
     position: absolute;
     display: flex;
-    width: 95%;
-    left: 2.5%;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
     top: 72px;
 }
 display:flex;

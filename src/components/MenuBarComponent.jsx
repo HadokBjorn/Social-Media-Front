@@ -10,32 +10,40 @@ import { Link } from "react-router-dom";
 export default function MenuBarComponent({image}){
     const navigate = useNavigate()
     const [openDropdown, setOpenDropdown] = useState(false)
+    const [open, setOpen]= useState(false)
     const [busca, setBusca]= useState("")
     const [result, setResult]= useState([])
+    const logged = JSON.parse(localStorage.getItem("user"))
     
     function logout(){
         localStorage.clear()
         navigate("/")
     }
+    function Travel(i){
+        navigate(`/user/${i.id}`)
+    }
 
     function Search(event){
         setBusca(event.target.value)
+        let info=event.target.value
         const url = `${process.env.REACT_APP_API_URL}/search`
-        if( busca.length >= 3){
-            console.log(busca)
-            axios.post(url, {search: busca})
+        if( info.length >= 3){
+            setOpen(true)
+            console.log(info)
+            axios.post(url, {search: info, id: logged.id.toString()})
             .then((res)=>{
                 setResult(res.data)
+                console.log(res.data)
             })
             .catch((err)=>{
-                console.log(err)
+                console.log(err.message)
             })
         }
     }
     
     return(
         <Header>
-            <h1>linkr</h1>
+            <Link to="/timeline"><h1>linkr</h1></Link>
             <SearchContainer>
                 <Sear as={DebounceInput}
                 debounceTimeout={300}
@@ -43,15 +51,16 @@ export default function MenuBarComponent({image}){
                 placeholder={'Search for people and friends'}
                 onChange={Search}/>
                 {
-                    result.length > 0 ? 
+                    result.length > 0  && open? 
                         <Container>
                             {
-                                result.map((i) => (
+                                result.map((i) => ( i === result[result.length-1] ? <div></div> :
                                 <ResultBox>
                                     <div> <img src={i.image} alt="profile"/></div>
-                                    <Link to={`user/${i.id}`}>
+                                    <Link to={`/user/${i.id}`}>
                                         <div>{i.username}</div>
                                     </Link>
+                                    <div>{result[result.length-1].includes(i.id) ? "Following" : "" }</div>
                                 </ResultBox>) 
                                 )
                             }
@@ -59,7 +68,13 @@ export default function MenuBarComponent({image}){
                         : 
                         <div></div>
                 }
+                
                 <MagnifyingGlass>{AiOutlineSearch}</MagnifyingGlass>
+                {
+                open?
+                <ClickOt onClick={()=>setOpen(false)}/>:
+                ""
+            }
             </SearchContainer>
             <Logout>
                 <IconContainer>
@@ -102,6 +117,7 @@ export default function MenuBarComponent({image}){
                 <ClickOut onClick={()=>setOpenDropdown(false)}/>:
                 ""
             }
+             
         </Header>
     )
 }
@@ -210,6 +226,7 @@ const Sear= styled.input`
   border-radius: 0 0 8px 8px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   padding: 8px;
+  z-index:5;
   @media screen and (max-width: 768px){
     width: 100%;
     margin: 0 auto;
@@ -253,7 +270,8 @@ div{
   font-size:medium;
   color: black;
   margin-left:3px;
-}`;
+};
+z-index:5;`;
 
 const MagnifyingGlass= styled.div `
 font-size: 30px;
@@ -267,4 +285,10 @@ z-index: 1;
 @media (max-width: 768px){  
 top: 15px;
 right: 10px;
-}`
+}`;
+
+const ClickOt = styled.article`
+    position: fixed;
+    z-index:0;
+    top: 0;bottom:0;left:0;right:0;
+`

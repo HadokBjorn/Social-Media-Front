@@ -370,7 +370,7 @@ display: flex;
 gap: 14px;
 padding: 10px 15px;
 .container-image-and-comment{
-    width: 50px;
+    width: 67px;
     height: 100%;
 
     display: flex;

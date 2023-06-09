@@ -61,7 +61,7 @@ export default function UserPage() {
 
     return (
         <Screen>
-            <MenuBarComponent/>
+            <MenuBarComponent image={logged.image}/>
             <ContainerTimeline>
                 <HeaderTimeline>
                      <h1>{user?.username}'s posts</h1>

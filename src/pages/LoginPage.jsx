@@ -57,7 +57,7 @@ export default function LoginPage(){
                 <input placeholder="e-mail" type="email" required ref={email} />
                 <input placeholder="password" type="password" required ref={password} />
                 
-                <button type="submit" disabled={buttonDisabled}>Sign Up</button>
+                <button type="submit" disabled={buttonDisabled}>Log In</button>
 
                 <Link to="/sign-up">First time? Create an account!</Link>
             </form>

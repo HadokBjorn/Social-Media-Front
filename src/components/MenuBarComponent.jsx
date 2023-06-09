@@ -137,6 +137,8 @@ const Logout = styled.div`
         height: 53px;
         border-radius: 26.5px;
         margin-right: 20px;
+        object-fit: cover;
+        object-position: center;
     }
 `
 const DropdownOptions = styled.ul`
@@ -239,6 +241,8 @@ img{
     height:30px;
     border-radius:8px;
     margin-left:5px;
+    object-fit: cover;
+    object-position: center;
 };
 div{
   font-weight: 400;

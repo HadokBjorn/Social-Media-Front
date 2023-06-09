@@ -108,7 +108,9 @@ export default function TimelinePage() {
             <ContainerTimeline>
                 <h1>Timeline</h1>
                 <WritePost>
-                    <img src={user.image ? user.image : "https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"} alt=""/>
+                    <div className="writePost-image-container">
+                        <img src={user.image ? user.image : "https://miro.medium.com/v2/resize:fit:1400/1*g09N-jl7JtVjVZGcd-vL2g.jpeg"} alt=""/>
+                    </div>
                     <Form onSubmit={publish}>
                         <p>What are you going to share today?</p>
                         <LinkURL
@@ -265,16 +267,21 @@ background: #FFFFFF;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 16px;
 margin-bottom: 40px;
-img{
+.writePost-image-container{
     display: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 26.5px;
+    height: 100%;
     margin-left: 15px;
-    margin-top: 18px;
     @media screen and (min-width: 768px) {
         display: block;
     }
+
+}
+img{
+    width: 50px;
+    height: 50px;
+    border-radius: 26.5px;
+    margin-top: 18px;
+    
 }
 `
 const LinkURL = styled.input`
@@ -307,7 +314,7 @@ color: #111;
 const Form = styled.form`
 display: flex;
 flex-direction: column;
-align-items: center;
+align-items: flex-start;
 justify-content: center;
 width: 100%;
 padding: 10px 15px;
